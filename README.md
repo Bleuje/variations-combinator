@@ -1,1 +1,1 @@
-# variations-combinator
+# Variations Combinator
