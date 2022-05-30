@@ -20,24 +20,9 @@ uniform float mouseY;
 uniform float rot1;
 uniform float rot2;
 uniform float rot3;
-uniform float wproj0_0;
-uniform float wproj1_0;
-uniform float wproj2_0;
-uniform float wproj3_0;
-uniform float wproj0_1;
-uniform float wproj1_1;
-uniform float wproj2_1;
-uniform float wproj3_1;
-uniform float wproj0_2;
-uniform float wproj1_2;
-uniform float wproj2_2;
-uniform float wproj3_2;
-uniform float wproj0_3;
-uniform float wproj1_3;
-uniform float wproj2_3;
-uniform float wproj3_3;
+
 uniform int projectionIndex;
-uniform float DZ0;
+uniform float projDist;
 
 #define PI 3.1415926538
 #define TWO_PI (2.*3.1415926538)
@@ -1252,14 +1237,7 @@ void main(){
 		{
 			curPos2 = applyFold(curPos2, params[i].foldType, i);
 		}
-/*
-		float xx = wproj0_0*curPos1.x + wproj0_1*curPos1.y + wproj0_2*curPos2.x + wproj0_3*curPos2.y;
-		float yy = wproj1_0*curPos1.x + wproj1_1*curPos1.y + wproj1_2*curPos2.x + wproj1_3*curPos2.y;
-		float zz = wproj2_0*curPos1.x + wproj2_1*curPos1.y + wproj2_2*curPos2.x + wproj2_3*curPos2.y;
-		float tt = wproj3_0*curPos1.x + wproj3_1*curPos1.y + wproj3_2*curPos2.x + wproj3_3*curPos2.y;
-		//float zz = 0.5*curPos2.x + 0.5*curPos2.y;
-		//float zz = 0.5*curPos2.x + 0.5*curPos2.y;
-*/
+
 		float xx,yy,zz,tt;
 
 		if(projectionIndex==0)
@@ -1290,15 +1268,13 @@ void main(){
 			zz = curPos2.x;
 			tt = curPos2.y;
 		}
-
-		float dz0 = 2.5;
 		
 		vec3 curPos3d;
 		bool giveUp = false;
 		
-		if(dz0-tt>0)
+		if(projDist-tt>0)
 		{
-			curPos3d = 1.7*vec3(xx,yy,zz)/(dz0-tt);
+			curPos3d = 1.7*vec3(xx,yy,zz)/(projDist-tt);
 		}
 		else
 		{
@@ -1310,65 +1286,11 @@ void main(){
 		curPos3d.xz = rotate(curPos3d.xz, rot2);
 		curPos3d.yz = rotate(curPos3d.yz, rot3);
 		
-		if(doSinusoid==1)
+		if(false && doSinusoid==1)
 		{
 		
 			float len = length(curPos3d);
 			float len2 = mix(len,1.6,0.8);
-			curPos3d *= len2/len;
-		}
-		else
-		{
-			curPos3d *= 1.0;
-		}
-		
-		float dz = 2.6;
-		
-		float dof = width/2.7;
-		
-		if(dz-curPos3d.z>0 && !giveUp)
-		{
-			float projx = width/2.0 + dof*curPos3d.x/(dz-curPos3d.z);
-			float projy = height/2.0 + dof*curPos3d.y/(dz-curPos3d.z);
-			target = vec2(projx,projy);
-		}
-		else
-		{
-			target = vec2(2*width,2*height);
-		}
-		
-		factor = max(0.9,2.0*dz/(dz-curPos3d.z));
-	}
-	else if(threeD==2)
-	{
-		vec2 curPos1 = curPos;
-		vec2 curPos2 = curPos;
-		vec2 curPos3 = curPos;
-		for(int i=0;i<sequenceLength/3;i++)
-		{
-			curPos1 = applyFold(curPos1, params[i].foldType, i);
-		}
-		for(int i=sequenceLength/3;i<(2*sequenceLength)/3;i++)
-		{
-			curPos2 = applyFold(curPos2, params[i].foldType, i);
-		}
-		for(int i=(2*sequenceLength)/3;i<sequenceLength;i++)
-		{
-			curPos3 = applyFold(curPos3, params[i].foldType, i);
-		}
-		
-		vec3 curPos3d = 0.8*vec3(atan2(curPos1.x,curPos1.y),atan2(curPos2.x,curPos2.y),atan2(curPos3.x,curPos3.y))/DZ0;
-		bool giveUp = false;
-		
-		curPos3d.xy = rotate(curPos3d.xy, rot1);
-		curPos3d.xz = rotate(curPos3d.xz, rot2);
-		curPos3d.yz = rotate(curPos3d.yz, rot3);
-		
-		if(doSinusoid>0)
-		{
-		
-			float len = length(curPos3d);
-			float len2 = mix(len,1.8,2.0*mouseY/height);
 			curPos3d *= len2/len;
 		}
 		else

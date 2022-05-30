@@ -120,30 +120,11 @@ void ofApp::drawFold()
     countincrementer.setUniform1f("rot2",curRot2);
     countincrementer.setUniform1f("rot3",curRot3);
 
-    countincrementer.setUniform1f("wproj0_0",projWeights[0][0]);
-    countincrementer.setUniform1f("wproj1_0",projWeights[1][0]);
-    countincrementer.setUniform1f("wproj2_0",projWeights[2][0]);
-    countincrementer.setUniform1f("wproj3_0",projWeights[3][0]);
-
-    countincrementer.setUniform1f("wproj0_1",projWeights[0][1]);
-    countincrementer.setUniform1f("wproj1_1",projWeights[1][1]);
-    countincrementer.setUniform1f("wproj2_1",projWeights[2][1]);
-    countincrementer.setUniform1f("wproj3_1",projWeights[3][1]);
-
-    countincrementer.setUniform1f("wproj0_2",projWeights[0][2]);
-    countincrementer.setUniform1f("wproj1_2",projWeights[1][2]);
-    countincrementer.setUniform1f("wproj2_2",projWeights[2][2]);
-    countincrementer.setUniform1f("wproj3_2",projWeights[3][2]);
-
-    countincrementer.setUniform1f("wproj0_3",projWeights[0][3]);
-    countincrementer.setUniform1f("wproj1_3",projWeights[1][3]);
-    countincrementer.setUniform1f("wproj2_3",projWeights[2][3]);
-    countincrementer.setUniform1f("wproj3_3",projWeights[3][3]);
-
     countincrementer.setUniform1i("projectionIndex",chosenProjectionDivisor);
 
-    float dz0 = 1.1*pow(1.003,mouseX-ofGetWidth()/2.0);
-    countincrementer.setUniform1f("DZ0",dz0);
+    //float dz0 = 1.1*pow(1.003,mouseX-ofGetWidth()/2.0);
+    float projDist = 3.0-ofMap(curR2,-1,1,0,1.7);
+    countincrementer.setUniform1f("projDist",projDist);
     countincrementer.dispatchCompute(nx / 32, ny / 32, 1);
     countincrementer.end();
 
@@ -160,29 +141,8 @@ void ofApp::drawFold()
     renderingshader.end();
 }
 
-void ofApp::actionChangeProjection()
-{
-    for(int j=0;j<4;j++)
-    {
-        float sum = 0;
-        for(int i=0;i<4;i++)
-        {
-            float w = ofRandom(-0.8,0.8)+0*(i==j);
-            sum += w;
-            projWeights[i][j] = w;
-        }
-        for(int i=0;i<4;i++)
-        {
-            //projWeights[j][i]/=sum;
-        }
-    }
-    chosenProjectionDivisor = (chosenProjectionDivisor + 1)%4;
-}
-
 void ofApp::setNewParameters()
 {
-    actionChangeProjection();
-
     for(int i=0;i<curNumberOfSuccesiveFolds;i++)
     {
         if(!addingNewFold||(i==curNumberOfSuccesiveFolds-1)){
@@ -662,6 +622,13 @@ void ofApp::actionResetScale(int i)
     printS = false;
 }
 
+void ofApp::actionChangeProjection()
+{
+    chosenProjectionDivisor = (chosenProjectionDivisor + 1)%4;
+    renderNewOne = true;
+    printS = false;
+}
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
     printS = true;
@@ -981,7 +948,7 @@ void ofApp::showState()
             myFont.drawString(functionString,0,0);
         }
 
-        if(i>0 && threeD==0)
+        if(i>0 && (threeD==0||(revi!=curNumberOfSuccesiveFolds/2-1)))
         {
             //float troffset = 7*cos(TWO_PI*(123+0.03*frameNum - 0.11*i));
             float troffset = 7*cos(TWO_PI*ofClamp(2.3*fmod(123+0.027*frameNum - 0.15*i,2.3),0,1));
@@ -1073,8 +1040,10 @@ void ofApp::showState()
         myFont.drawString("                         : randomize parameters of pointed function",0,0);
         myFontBold.drawString("X",0,0);
         ofTranslate(0,ytr);
-        myFont.drawString("                         : activate/deactivate keeping particles in screen",0,0);
+        myFont.drawString("                         : in 2D, keep particles in screen or not",0,0);
         myFontBold.drawString("Y",0,0);
+        ofTranslate(0,ytr);
+        myFont.drawString("                         : in 3D, change 3D projection",0,0);
         ofTranslate(0,ytr);
         myFont.drawString("                         : add/remove function",0,0);
         myFontBold.drawString("L1/R1",0,0);
@@ -1239,6 +1208,10 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
     {
         curL2 = e.value;
     }
+    if(axisType==5)
+    {
+        curR2 = e.value;
+    }
 }
 
 void ofApp::buttonPressed(ofxGamepadButtonEvent& e)
@@ -1259,7 +1232,8 @@ void ofApp::buttonPressed(ofxGamepadButtonEvent& e)
     }
     if(buttonId == 3)
     {
-        actionSetBounder();
+        if(threeD==0) actionSetBounder();
+        else actionChangeProjection();
     }
     if(buttonId == 4)
     {

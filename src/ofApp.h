@@ -164,8 +164,6 @@ public:
 
     double weightCount[NB_MAX_FOLDS];
 
-    float projWeights[4][4];
-
     int chosenProjectionDivisor = 0;
 
     vector<RandomParameters> parameters;
@@ -202,6 +200,7 @@ public:
     double curScaleAxis1 = 0;
     double curRotationAxis1 = 0;
     double curL2 = -1;
+    double curR2 = -1;
     float latest3DJSMoveTime = -1111;
     float translationStep = 0.02;
 
