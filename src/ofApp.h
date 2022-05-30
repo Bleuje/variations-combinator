@@ -164,6 +164,10 @@ public:
 
     double weightCount[NB_MAX_FOLDS];
 
+    float projWeights[4][4];
+
+    int chosenProjectionDivisor = 0;
+
     vector<RandomParameters> parameters;
     ofBufferObject parametersBuffer;
 
@@ -232,6 +236,7 @@ public:
     void actionResetScales();
     void actionResetScale(int i);
     void actionResetRotations();
+    void actionChangeProjection();
 
     bool printS = true;
 

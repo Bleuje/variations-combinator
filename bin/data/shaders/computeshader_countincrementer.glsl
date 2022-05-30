@@ -20,6 +20,23 @@ uniform float mouseY;
 uniform float rot1;
 uniform float rot2;
 uniform float rot3;
+uniform float wproj0_0;
+uniform float wproj1_0;
+uniform float wproj2_0;
+uniform float wproj3_0;
+uniform float wproj0_1;
+uniform float wproj1_1;
+uniform float wproj2_1;
+uniform float wproj3_1;
+uniform float wproj0_2;
+uniform float wproj1_2;
+uniform float wproj2_2;
+uniform float wproj3_2;
+uniform float wproj0_3;
+uniform float wproj1_3;
+uniform float wproj2_3;
+uniform float wproj3_3;
+uniform int projectionIndex;
 uniform float DZ0;
 
 #define PI 3.1415926538
@@ -1235,19 +1252,57 @@ void main(){
 		{
 			curPos2 = applyFold(curPos2, params[i].foldType, i);
 		}
-		
+/*
+		float xx = wproj0_0*curPos1.x + wproj0_1*curPos1.y + wproj0_2*curPos2.x + wproj0_3*curPos2.y;
+		float yy = wproj1_0*curPos1.x + wproj1_1*curPos1.y + wproj1_2*curPos2.x + wproj1_3*curPos2.y;
+		float zz = wproj2_0*curPos1.x + wproj2_1*curPos1.y + wproj2_2*curPos2.x + wproj2_3*curPos2.y;
+		float tt = wproj3_0*curPos1.x + wproj3_1*curPos1.y + wproj3_2*curPos2.x + wproj3_3*curPos2.y;
+		//float zz = 0.5*curPos2.x + 0.5*curPos2.y;
+		//float zz = 0.5*curPos2.x + 0.5*curPos2.y;
+*/
+		float xx,yy,zz,tt;
+
+		if(projectionIndex==0)
+		{
+			tt = curPos1.x;
+			xx = curPos1.y;
+			yy = curPos2.x;
+			zz = curPos2.y;
+		}
+		else if(projectionIndex==1)
+		{
+			xx = curPos1.x;
+			tt = curPos1.y;
+			yy = curPos2.x;
+			zz = curPos2.y;
+		}
+		else if(projectionIndex==2)
+		{
+			xx = curPos1.x;
+			yy = curPos1.y;
+			tt = curPos2.x;
+			zz = curPos2.y;
+		}
+		else if(projectionIndex==3)
+		{
+			xx = curPos1.x;
+			yy = curPos1.y;
+			zz = curPos2.x;
+			tt = curPos2.y;
+		}
+
 		float dz0 = 2.5;
 		
 		vec3 curPos3d;
 		bool giveUp = false;
 		
-		if(dz0-curPos2.y>0)
+		if(dz0-tt>0)
 		{
-			curPos3d = 1.7*vec3(curPos1.x,curPos1.y,curPos2.x)/(dz0-curPos2.y);
+			curPos3d = 1.7*vec3(xx,yy,zz)/(dz0-tt);
 		}
 		else
 		{
-			curPos3d = vec3(curPos1.x,curPos1.y+curPos2.x,curPos2.y);
+			curPos3d = vec3(xx,yy+zz,tt);
 			giveUp = true;
 		}
 		

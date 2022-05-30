@@ -119,6 +119,29 @@ void ofApp::drawFold()
     countincrementer.setUniform1f("rot1",curRot1);
     countincrementer.setUniform1f("rot2",curRot2);
     countincrementer.setUniform1f("rot3",curRot3);
+
+    countincrementer.setUniform1f("wproj0_0",projWeights[0][0]);
+    countincrementer.setUniform1f("wproj1_0",projWeights[1][0]);
+    countincrementer.setUniform1f("wproj2_0",projWeights[2][0]);
+    countincrementer.setUniform1f("wproj3_0",projWeights[3][0]);
+
+    countincrementer.setUniform1f("wproj0_1",projWeights[0][1]);
+    countincrementer.setUniform1f("wproj1_1",projWeights[1][1]);
+    countincrementer.setUniform1f("wproj2_1",projWeights[2][1]);
+    countincrementer.setUniform1f("wproj3_1",projWeights[3][1]);
+
+    countincrementer.setUniform1f("wproj0_2",projWeights[0][2]);
+    countincrementer.setUniform1f("wproj1_2",projWeights[1][2]);
+    countincrementer.setUniform1f("wproj2_2",projWeights[2][2]);
+    countincrementer.setUniform1f("wproj3_2",projWeights[3][2]);
+
+    countincrementer.setUniform1f("wproj0_3",projWeights[0][3]);
+    countincrementer.setUniform1f("wproj1_3",projWeights[1][3]);
+    countincrementer.setUniform1f("wproj2_3",projWeights[2][3]);
+    countincrementer.setUniform1f("wproj3_3",projWeights[3][3]);
+
+    countincrementer.setUniform1i("projectionIndex",chosenProjectionDivisor);
+
     float dz0 = 1.1*pow(1.003,mouseX-ofGetWidth()/2.0);
     countincrementer.setUniform1f("DZ0",dz0);
     countincrementer.dispatchCompute(nx / 32, ny / 32, 1);
@@ -137,8 +160,29 @@ void ofApp::drawFold()
     renderingshader.end();
 }
 
+void ofApp::actionChangeProjection()
+{
+    for(int j=0;j<4;j++)
+    {
+        float sum = 0;
+        for(int i=0;i<4;i++)
+        {
+            float w = ofRandom(-0.8,0.8)+0*(i==j);
+            sum += w;
+            projWeights[i][j] = w;
+        }
+        for(int i=0;i<4;i++)
+        {
+            //projWeights[j][i]/=sum;
+        }
+    }
+    chosenProjectionDivisor = (chosenProjectionDivisor + 1)%4;
+}
+
 void ofApp::setNewParameters()
 {
+    actionChangeProjection();
+
     for(int i=0;i<curNumberOfSuccesiveFolds;i++)
     {
         if(!addingNewFold||(i==curNumberOfSuccesiveFolds-1)){
@@ -840,6 +884,10 @@ void ofApp::keyPressed(int key) {
     if(key=='!')
     {
         actionChange2D3D();
+    }
+    if(key=='=')
+    {
+        actionChangeProjection();
     }
     if(printS) printState();
     showState();
