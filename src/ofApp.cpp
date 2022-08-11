@@ -410,7 +410,7 @@ void ofApp::draw() {
 
 void ofApp::saveLog(std::string s)
 {
-    std::string filename = "functions_" + s + ".txt";
+    std::string filename = "images/functions_" + s + ".txt";
 
     myFunctionsTextFile.open(filename,ofFile::WriteOnly);
 
@@ -856,6 +856,13 @@ void ofApp::keyPressed(int key) {
     {
         actionChangeProjection();
     }
+    if(key==')')
+    {
+        std::string s = "screenshot_"+ofGetTimestampString();
+        ofSaveScreen("images/"+s+".png");
+        std::cout << "Saved screenshot " << s << std::endl;
+        saveLog(s);
+    }
     if(printS) printState();
     showState();
 }
@@ -1163,41 +1170,41 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
     {
         actionMoveCursor(1);
     }
-    if(axisType==3 || axisType==4)
+    if(axisType==0 || axisType==1)
     {
-        if(axisType==3) curRotAxis1 = 0;
-        if(axisType==4) curRotAxis2 = 0;
-        if(axisType==3) curTranslationAxis1 = 0;
-        if(axisType==4) curTranslationAxis2 = 0;
+        if(axisType==0) curRotAxis1 = 0;
+        if(axisType==1) curRotAxis2 = 0;
+        if(axisType==0) curTranslationAxis1 = 0;
+        if(axisType==1) curTranslationAxis2 = 0;
         latest3DJSMoveTime = time;
-        if(abs(e.value)>0.05)
+        if(abs(e.value)>0.09)
         {
             latest3DJSMoveTime = time;
-            if(axisType==3) curRotAxis1 = e.value;
-            if(axisType==4) curRotAxis2 = e.value;
+            if(axisType==0) curRotAxis1 = e.value;
+            if(axisType==1) curRotAxis2 = e.value;
         }
-        if(abs(e.value)>0.05 && threeD==0)
+        if(abs(e.value)>0.09 && threeD==0)
         {
-            if(axisType==3) curTranslationAxis1 = e.value;
-            if(axisType==4) curTranslationAxis2 = e.value;
+            if(axisType==0) curTranslationAxis1 = e.value;
+            if(axisType==1) curTranslationAxis2 = e.value;
             renderNewOne = true;
             printS = false;
         }
     }
-    if(axisType==1)
+    if(axisType==4)
     {
         curScaleAxis1 = 0;
-        if(abs(e.value)>0.05)
+        if(abs(e.value)>0.09)
         {
             curScaleAxis1 = -e.value;
             renderNewOne = true;
             printS = false;
         }
     }
-    if(axisType==0)
+    if(axisType==3)
     {
         curRotationAxis1 = 0;
-        if(abs(e.value)>0.05)
+        if(abs(e.value)>0.09)
         {
             curRotationAxis1 = e.value;
             renderNewOne = true;
@@ -1251,12 +1258,12 @@ void ofApp::buttonPressed(ofxGamepadButtonEvent& e)
     {
         actionChangeColors();
     }
-    if(buttonId == 9)
+    if(buttonId == 10)
     {
         actionResetScales();
         actionResetRotations();
     }
-    if(buttonId == 10)
+    if(buttonId == 9)
     {
         actionResetTranslations();
     }
