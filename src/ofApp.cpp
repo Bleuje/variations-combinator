@@ -101,7 +101,7 @@ void ofApp::drawFold()
     countincrementer.setUniform1i("threeD",threeD);
     countincrementer.setUniform1f("mouseX",mouseX);
     countincrementer.setUniform1f("mouseY",mouseY);
-    float amp = 0.1;
+    float amp = 0.07;
     float tp = 0.0004*ofGetFrameNum();
     if(time >= latest3DJSMoveTime + 3)
     {
@@ -1172,18 +1172,9 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
     }
     if(axisType==0 || axisType==1)
     {
-        if(axisType==0) curRotAxis1 = 0;
-        if(axisType==1) curRotAxis2 = 0;
         if(axisType==0) curTranslationAxis1 = 0;
         if(axisType==1) curTranslationAxis2 = 0;
-        latest3DJSMoveTime = time;
         if(abs(e.value)>0.09)
-        {
-            latest3DJSMoveTime = time;
-            if(axisType==0) curRotAxis1 = e.value;
-            if(axisType==1) curRotAxis2 = e.value;
-        }
-        if(abs(e.value)>0.09 && threeD==0)
         {
             if(axisType==0) curTranslationAxis1 = e.value;
             if(axisType==1) curTranslationAxis2 = e.value;
@@ -1191,7 +1182,19 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
             printS = false;
         }
     }
-    if(axisType==4)
+    if(axisType==3 || axisType==4)
+    {
+        if(axisType==3) curRotAxis1 = 0;
+        if(axisType==4) curRotAxis2 = 0;
+        latest3DJSMoveTime = time;
+        if(abs(e.value)>0.09)
+        {
+            latest3DJSMoveTime = time;
+            if(axisType==3) curRotAxis1 = e.value;
+            if(axisType==4) curRotAxis2 = e.value;
+        }
+    }
+    if(axisType==4 && threeD==0)
     {
         curScaleAxis1 = 0;
         if(abs(e.value)>0.09)
@@ -1201,7 +1204,7 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
             printS = false;
         }
     }
-    if(axisType==3)
+    if(axisType==3 && threeD==0)
     {
         curRotationAxis1 = 0;
         if(abs(e.value)>0.09)
