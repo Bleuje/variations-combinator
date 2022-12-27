@@ -21,8 +21,8 @@ void ofApp::setup() {
     renderingshader.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_uintstoimage.glsl");
     renderingshader.linkProgram();
 
-    parameters.resize(NB_MAX_FOLDS);
-    for(int i=0;i<NB_MAX_FOLDS;i++) weightCount[i] = 0;
+    parameters.resize(NB_MAX_VARIATIONS);
+    for(int i=0;i<NB_MAX_VARIATIONS;i++) weightCount[i] = 0;
     setNewParameters();
     parametersBuffer.allocate(parameters,GL_DYNAMIC_DRAW);
     parametersBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 4);
@@ -518,13 +518,13 @@ void ofApp::actionRandomizeSingleFunctionParameters()
         changeParameters(indexOfChanges);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
 }
 
 // add function at cursor
 void ofApp::actionAddFunctionAtCursor()
 {
-        curNumberOfSuccesiveFolds = min(curNumberOfSuccesiveFolds+1,NB_MAX_FOLDS);
+        curNumberOfSuccesiveFolds = min(curNumberOfSuccesiveFolds+1,NB_MAX_VARIATIONS);
         for(int j=curNumberOfSuccesiveFolds-1;j>indexOfChanges;j--) parameters[j] = parameters[j-1];
         for(int j=curNumberOfSuccesiveFolds-1;j>indexOfChanges;j--) weightCount[j] = weightCount[j-1];
         changeParameters(indexOfChanges);
@@ -584,7 +584,7 @@ void ofApp::actionResetTranslations()
     }
     parametersBuffer.updateData(parameters);
     renderNewOne = true;
-    printS = false;
+    doPrintState = false;
 }
 
 // reset translations
@@ -597,7 +597,7 @@ void ofApp::actionResetScales()
     }
     parametersBuffer.updateData(parameters);
     renderNewOne = true;
-    printS = false;
+    doPrintState = false;
 }
 
 // reset translations
@@ -609,7 +609,7 @@ void ofApp::actionResetRotations()
     }
     parametersBuffer.updateData(parameters);
     renderNewOne = true;
-    printS = false;
+    doPrintState = false;
 }
 
 // reset translations
@@ -619,23 +619,23 @@ void ofApp::actionResetScale(int i)
     updateWeight(i);
     parametersBuffer.updateData(parameters);
     renderNewOne = true;
-    printS = false;
+    doPrintState = false;
 }
 
 void ofApp::actionChangeProjection()
 {
     chosenProjectionDivisor = (chosenProjectionDivisor + 1)%4;
     renderNewOne = true;
-    printS = false;
+    doPrintState = false;
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-    printS = true;
+    doPrintState = true;
     if(key=='a') // rerender the same thing
     {
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='z') // try other folds
     {
@@ -650,32 +650,32 @@ void ofApp::keyPressed(int key) {
         //ofGetGLRenderer()->saveFullViewport(pixels);
         ofSaveImage(pixels,"images/image_"+s+"_large.png", OF_IMAGE_QUALITY_BEST);
         std::cout << "Saved image " << s << std::endl;
-        printS = false;
+        doPrintState = false;
         saveLog(s);
     }
     if(key=='+') // change the pixel value per count
     {
         contrastCount--;
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='-') // change the pixel value per count
     {
         contrastCount++;
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='/') // change the final sinusoid stretching
     {
         sinusoidStretchCount--;
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='*') // change the final sinusoid stretching
     {
         sinusoidStretchCount++;
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='e') // use final sinusoid or not
     {
@@ -687,7 +687,7 @@ void ofApp::keyPressed(int key) {
         for(int i=0;i<curNumberOfSuccesiveFolds;i++) updateWeight(i);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='r') // change weight of all folds
     {
@@ -695,7 +695,7 @@ void ofApp::keyPressed(int key) {
         for(int i=0;i<curNumberOfSuccesiveFolds;i++) updateWeight(i);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='y') // change random parameters for same fold types
     {
@@ -704,7 +704,7 @@ void ofApp::keyPressed(int key) {
     if(key=='f') // increase the number of folds
     {
         addingNewFold = true;
-        curNumberOfSuccesiveFolds = min(curNumberOfSuccesiveFolds+1,NB_MAX_FOLDS);
+        curNumberOfSuccesiveFolds = min(curNumberOfSuccesiveFolds+1,NB_MAX_VARIATIONS);
         setNewParameters();
         addingNewFold = false;
         renderNewOne = true;
@@ -775,28 +775,28 @@ void ofApp::keyPressed(int key) {
         parameters[indexOfChanges].tx += translationStep;
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='4')
     {
         parameters[indexOfChanges].tx -= translationStep;
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='2')
     {
         parameters[indexOfChanges].ty += translationStep;
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='8')
     {
         parameters[indexOfChanges].ty -= translationStep;
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='5')
     {
@@ -808,7 +808,7 @@ void ofApp::keyPressed(int key) {
         parameters[indexOfChanges].ty = 0;
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='1')
     {
@@ -816,7 +816,7 @@ void ofApp::keyPressed(int key) {
         updateWeight(indexOfChanges);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='3')
     {
@@ -824,7 +824,7 @@ void ofApp::keyPressed(int key) {
         updateWeight(indexOfChanges);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='.')
     {
@@ -832,17 +832,17 @@ void ofApp::keyPressed(int key) {
         updateWeight(indexOfChanges);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
-        printS = false;
+        doPrintState = false;
     }
     if(key==',')
     {
         radiusCount--;
-        printS = false;
+        doPrintState = false;
     }
     if(key==';')
     {
         radiusCount++;
-        printS = false;
+        doPrintState = false;
     }
     if(key=='&')
     {
@@ -863,7 +863,7 @@ void ofApp::keyPressed(int key) {
         std::cout << "Saved screenshot " << s << std::endl;
         saveLog(s);
     }
-    if(printS) printState();
+    if(doPrintState) printState();
     showState();
 }
 
@@ -1179,7 +1179,7 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
             if(axisType==0) curTranslationAxis1 = e.value;
             if(axisType==1) curTranslationAxis2 = e.value;
             renderNewOne = true;
-            printS = false;
+            doPrintState = false;
         }
     }
     if(axisType==3 || axisType==4)
@@ -1201,7 +1201,7 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
         {
             curScaleAxis1 = -e.value;
             renderNewOne = true;
-            printS = false;
+            doPrintState = false;
         }
     }
     if(axisType==3 && threeD==0)
@@ -1211,7 +1211,7 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
         {
             curRotationAxis1 = e.value;
             renderNewOne = true;
-            printS = false;
+            doPrintState = false;
         }
     }
     if(axisType==2)

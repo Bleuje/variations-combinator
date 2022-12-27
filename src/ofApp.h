@@ -2,27 +2,16 @@
 
 #include "ofMain.h"
 #include "ofxGamepadHandler.h"
+#include "utils.h"
 #include <random>
 #include <iomanip>
 #include <ctime>
 #include <chrono>
 
 
-#define NB_MAX_FOLDS 15
+#define NB_MAX_VARIATIONS 15
 #define WIDTH (1024+512)
 #define HEIGHT (1024+512)
-
-inline float sq(float x)
-{
-    return x*x;
-}
-
-inline float ease(float p, float g) {
-  if (p < 0.5) 
-    return 0.5 * pow(2*p, g);
-  else
-    return 1 - 0.5 * pow(2*(1 - p), g);
-}
 
 class ofApp : public ofBaseApp {
 
@@ -162,7 +151,7 @@ public:
         float radialblur_spinvar, radialblur_zoomvar;
     };
 
-    double weightCount[NB_MAX_FOLDS];
+    double weightCount[NB_MAX_VARIATIONS];
 
     int chosenProjectionDivisor = 0;
 
@@ -237,7 +226,7 @@ public:
     void actionResetRotations();
     void actionChangeProjection();
 
-    bool printS = true;
+    bool doPrintState = true;
 
     void keyPressed(int key);
     void keyReleased(int key);

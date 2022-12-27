@@ -102,7 +102,7 @@ void main(){
 	{
 		float greyValue2 = (threeD>0 ? 4.0*tanh(greyValue/2.0) : 1.1*tanh(greyValue/1.5));
 		
-		if(colormode==2) color0.rgb = pal(1.0*greyValue2 + 0.25 -0.17*time, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.33,0.67));
+		if(colormode==2) color0.rgb = aces(pal(1.0*greyValue2 + 0.25 -0.17*time, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.33,0.67)));
 		if(colormode==6) color0.rgb = pal(1.25*greyValue2, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.10,0.20));
 		if(colormode==7) color0.rgb = pal(1.25*greyValue2, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.3,0.20,0.20));
 		if(colormode==5) color0.rgb = pal(1.25*greyValue2, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,0.5),vec3(0.8,0.90,0.30));
