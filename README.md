@@ -28,7 +28,7 @@ The tool contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can 
 
 ## Gamepad
 
-The work on user interface is focused on the use of xbox/playstation gamepad, and the openFrameworks addon [ofxGamepad](https://github.com/Bleuje/ofxGamepad) is used. The gamepad interface is explained on screen when pressing L2.
+The work on user interface is kind of focused on the use of xbox/playstation gamepad, and the openFrameworks addon [ofxGamepad](https://github.com/Bleuje/ofxGamepad) is used. It's the most playful way to discover the tool. The gamepad interface is explained on screen when pressing L2.
 
 ## Keyboard shortcuts
 
