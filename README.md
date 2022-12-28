@@ -58,7 +58,7 @@ Less important keyboard shortcuts :
 | ----------- | ----------- |
 | Numpad arrows (**4**,**8**,**6**,**2**) | translate function ar cursor |
 | **5** | reset all translations |
-| **0** | reset ranslation of function at cursor |
+| **0** | reset translation of function at cursor |
 | **1** and **3** | change scale of function at cursor |
 | **.** | reset scale of function at cursor |
 | **A** | re-render |
