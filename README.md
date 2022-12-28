@@ -10,6 +10,8 @@ Tested only on linux so far. Making sure this is useable by other people than me
 
 ![examples of outputs](doc/outputs-examples.gif)
 
+![tool screenshot](doc/sceenshot-example.png)
+
 ## Main algorithm
 
 The main algorithm composes a list of functions called *variations* (which I often just call functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are functions found in fractal flames algorithms, that have been translated into glsl. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/).
