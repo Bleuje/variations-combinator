@@ -74,3 +74,7 @@ Getting interesting results is not really easy the more you become used to the t
 ## License
 
 GNU General Public License v3.0
+
+## Other
+
+Feel free to contribute. Possible future work is to release this as executables.
