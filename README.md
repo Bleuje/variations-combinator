@@ -20,7 +20,7 @@ He made a tutorial to explain the algorithm, using Processing : [Folds](https://
 
 This tool is real-time thanks to a compute shaders.
 
-You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. I translated some of them (most of them are not there) from Java into glsl (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl)).
+You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. I translated some of them (most of them are not in previous link) from Java into glsl (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl) for source code).
 
 ## 3D algorithm
 
