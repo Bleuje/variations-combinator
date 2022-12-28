@@ -1130,7 +1130,7 @@ void main(){
 	
 	float factor = 1;
 	
-	if(threeD==0)
+	if(threeD==0) // not 3D mode
 	{
 	
 		if(operationsMode==0)
@@ -1156,17 +1156,6 @@ void main(){
 			{
 				curPos = applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
 			}
-			
-			/*
-			for(int i=0;i<floor(sequenceLength/2);i++)
-			{
-				curPos = applyFold(curPos, params[2*i].foldType, 2*i)+applyFold(curPos, params[2*i+1].foldType, 2*i+1);
-				curPos /= 1.8;
-			}
-			if(sequenceLength%2==1)
-			{
-				curPos = applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
-			}*/
 		}
 		else if(operationsMode==2)
 		{
@@ -1199,11 +1188,7 @@ void main(){
 				float a = floor(5.*prand(inputPos))/4.;
 				float sf = 0.8+0.4*a;
 				if(i<sequenceLength-1) curPos *= sf;
-			}/*
-			for(int i=0;i<sequenceLength;i++)
-			{
-				curPos = applyFold(curPos, params[i].foldType, i);
-			}*/
+			}
 		}
 		
 		if(doSinusoid==1)
@@ -1225,7 +1210,7 @@ void main(){
 		target = width/2. + outputPos*width/w0*0.43; // line to change for margin
 	
 	}
-	else if(threeD==1)
+	else if(threeD==1) // 3D mode
 	{
 		vec2 curPos1 = curPos;
 		vec2 curPos2 = curPos;
@@ -1286,17 +1271,7 @@ void main(){
 		curPos3d.xz = rotate(curPos3d.xz, rot2);
 		curPos3d.yz = rotate(curPos3d.yz, rot3);
 		
-		if(false && doSinusoid==1)
-		{
-		
-			float len = length(curPos3d);
-			float len2 = mix(len,1.6,0.8);
-			curPos3d *= len2/len;
-		}
-		else
-		{
-			curPos3d *= 1.0;
-		}
+		curPos3d *= 1.0;
 		
 		float dz = 2.6;
 		

@@ -4,7 +4,6 @@
 void ofApp::setup() {
     ofSetFrameRate(MAX_FPS);
 
-    //myFont.load("OPTIMA.TTF",40);
     myFont.load("fonts/Raleway-Regular.ttf",floor(40.0*ofGetHeight()/HEIGHT));
     myFontBold.load("fonts/Raleway-Bold.ttf",floor(40.0*ofGetHeight()/HEIGHT));
 
@@ -32,8 +31,7 @@ void ofApp::setup() {
     debugImage.getTexture().bindAsImage(1, GL_WRITE_ONLY);
 
     ////////////////
-
-    //CHECK IF THERE EVEN IS A GAMEPAD CONNECTED
+    // check if there is a gamepad connected
     numberOfGamepads = ofxGamepadHandler::get()->getNumPads();
 
 	if(numberOfGamepads>0){
@@ -48,6 +46,7 @@ void ofApp::setup() {
     printState();
 }
 
+// shader calls to compute image
 void ofApp::drawFold()
 {
     bool update = false;
@@ -122,7 +121,7 @@ void ofApp::drawFold()
 
     countincrementer.setUniform1i("projectionIndex",chosenProjectionDivisor);
 
-    //float dz0 = 1.1*pow(1.003,mouseX-ofGetWidth()/2.0);
+    //float projDist = 1.1*pow(1.003,mouseX-ofGetWidth()/2.0);
     float projDist = 3.0-ofMap(curR2,-1,1,0,1.7);
     countincrementer.setUniform1f("projDist",projDist);
     countincrementer.dispatchCompute(nx / 32, ny / 32, 1);
@@ -159,12 +158,9 @@ void ofApp::updateWeight(int i)
     parameters[i].weight = pow(1.007,uniformWeightCount)*pow(1.01,weightCount[i]);
 }
 
+// change parameters of variation i
 void ofApp::changeParameters(int i)
 {
-/*
-    std::default_random_engine generator; // seed ?
-    std::normal_distribution<double> normalDistribution(0.,1.0);
-*/
     actionResetScale(i);
 
     parameters[i].tx = 0;
@@ -314,8 +310,9 @@ void ofApp::changeParameters(int i)
 
     parameters[i].split_xsize = ofRandom(-0.8,0.8);
     parameters[i].split_ysize = ofRandom(-0.8,0.8);
-//////////////////////////////////////////////////////////
-    // precomputed parameters from previous parameters
+
+    //////////////////////////////////////////////////////
+    // precomputed parameters from previous parameters //
     float tmp,tmp2;
 
     parameters[i].julian_cpower = parameters[i].julian_dist/parameters[i].julian_power/2.0f;
@@ -408,6 +405,7 @@ void ofApp::draw() {
     showState();
 }
 
+// save list of functions in text file
 void ofApp::saveLog(std::string s)
 {
     std::string filename = "images/functions_" + s + ".txt";
@@ -867,6 +865,7 @@ void ofApp::keyPressed(int key) {
     showState();
 }
 
+// print info in console
 void ofApp::printState()
 {
     std::cout << "----------" << std::endl;
@@ -896,6 +895,7 @@ void ofApp::printState()
     }
 }
 
+// show info on screen
 void ofApp::showState()
 {
 
