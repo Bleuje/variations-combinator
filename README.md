@@ -8,7 +8,11 @@ openFrameworks [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used 
 
 Latest version is tested only on linux so far, but many people have tested it previously on windows before the gamepad functionality was added. Making sure this is useable by other people than me is a work in progress... :)
 
+Examples of outputs :
+
 ![examples of outputs](doc/outputs-examples.gif)
+
+Screenshot of the tool :
 
 ![tool screenshot](doc/sceenshot-example.png)
 
@@ -87,4 +91,4 @@ Possible future work :
 
 - release as executables
 - branch without gamepad code
-- demo youtube video should code when I'll have my gamepad available
+- youtube demo video should code when I'll have my gamepad available
