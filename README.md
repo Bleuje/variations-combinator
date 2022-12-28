@@ -6,7 +6,7 @@ The following blog shows images generated with this tool : [https://math-art-var
 
 Tested only on linux so far. Making this useable by other people than me is a work in progress :)
 
-openFrameworks [ofxGamepad](https://github.com/underdoeg/ofxGamepad) addon is used.
+openFrameworks [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (I think you should use my fork because of a fix).
 
 ![examples of outputs](doc/outputs-examples.gif)
 
@@ -26,7 +26,7 @@ The project contains a 3D mode : using two 2D -> 2D functions a 4D point cloud c
 
 ## Gamepad
 
-The work on user interface is focused on the use of xbox/playstation gamepad, and the openFrameworks addon [ofxGamepad](https://github.com/underdoeg/ofxGamepad) is used. The gamepad interface is explained on screen when pressing L2.
+The work on user interface is focused on the use of xbox/playstation gamepad, and the openFrameworks addon [ofxGamepad](https://github.com/Bleuje/ofxGamepad) is used. The gamepad interface is explained on screen when pressing L2.
 
 ## Keyboard shortcuts
 
