@@ -14,11 +14,13 @@ Tested only on linux so far. Making sure this is useable by other people than me
 
 ## Main algorithm
 
-The main algorithm composes a list of functions called *variations* (which I often just call functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are functions found in fractal flames algorithms, that have been translated into glsl. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/).
+The main algorithm composes a list of functions called *variations* (which I often just call functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are found in fractal flames algorithms. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/).
 
 He made a tutorial to explain the algorithm, using Processing : [Folds](https://generateme.wordpress.com/2016/04/11/folds/)
 
 This tool is real-time thanks to a compute shaders.
+
+You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. I translated some of them (most of them are not there) from Java into glsl (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl)).
 
 ## 3D algorithm
 
@@ -28,11 +30,11 @@ The tool contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can 
 
 ## Gamepad
 
-The work on user interface is focused on the use of xbox/playstation gamepad, and the openFrameworks addon [ofxGamepad](https://github.com/Bleuje/ofxGamepad) is used. The gamepad interface is explained on screen when pressing L2.
+The work on user interface is kind of focused on the use of xbox/playstation gamepad, and the openFrameworks addon [ofxGamepad](https://github.com/Bleuje/ofxGamepad) is used. It's the most playful way to discover the tool though there is no save button on gamepad. The gamepad interface is explained on screen when pressing L2.
 
 ## Keyboard shortcuts
 
-But it's also controllable with keyboard with even more actions, but not in a friendly way and intended for AZERTY keyboard layout.
+But it's also controllable with keyboard with more actions, but not in a friendly way and intended for AZERTY keyboard layout.
 
 ### Main keyboard shortcuts :
 
@@ -41,7 +43,7 @@ But it's also controllable with keyboard with even more actions, but not in a fr
 | **Escape** | **quit** the app |
 | **W** and **X** | function selection navigation / change cursor position |
 | **C** and **V** | change function at cursor |
-| **S** | **save** picture (with timestamp in filename), also saves the list of functions in a text file | 
+| **S** | **save** picture (with timestamp in filename), also saves the list of functions in a text file. Both in "data/images" folder | 
 | **Q** | randomize parameters of function at cursor (not possible for all variations) |
 | **Y** | randomize parameters of all functions |
 | **Z** | change all functions randomly |
@@ -58,14 +60,14 @@ Less important keyboard shortcuts :
 | ----------- | ----------- |
 | Numpad arrows (**4**,**8**,**6**,**2**) | translate function ar cursor |
 | **5** | reset all translations |
-| **0** | reset ranslation of function at cursor |
+| **0** | reset translation of function at cursor |
 | **1** and **3** | change scale of function at cursor |
 | **.** | reset scale of function at cursor |
 | **A** | re-render |
 | **)** | screenshot |
 | **+** / **-** | more or less opacity per particle |
 
-There are some more, see void ofApp::keyPressed(int key) in source code.
+There are some more, see `void ofApp::keyPressed(int key)` in source code (ofApp.cpp).
 
 ## Tricks to get good pictures
 
@@ -74,3 +76,14 @@ Getting interesting results is not really easy the more you become used to the t
 ## License
 
 GNU General Public License v3.0
+
+## Other
+
+Feel free to contribute or share your results.
+
+Thank you generateme for the inspiration.
+
+Possible future work :
+
+- release as executables
+- branch without gamepad code
