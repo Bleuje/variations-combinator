@@ -6,7 +6,7 @@ The following blog shows images generated with this tool : [https://math-art-var
 
 openFrameworks [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (I think you should use my fork because of a fix).
 
-Tested only on linux so far. Making sure this is useable by other people than me is a work in progress... :)
+Latest version is tested only on linux so far, but many people have tested it previously on windows before the gamepad functionality was added. Making sure this is useable by other people than me is a work in progress... :)
 
 ![examples of outputs](doc/outputs-examples.gif)
 
@@ -87,3 +87,4 @@ Possible future work :
 
 - release as executables
 - branch without gamepad code
+- demo youtube video should code when I'll have my gamepad available
