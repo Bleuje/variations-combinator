@@ -1,6 +1,7 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+// intialization
 void ofApp::setup() {
     ofSetFrameRate(MAX_FPS);
 
@@ -30,7 +31,7 @@ void ofApp::setup() {
     displayedimage.getTexture().bindAsImage(3, GL_WRITE_ONLY);
     debugImage.getTexture().bindAsImage(1, GL_WRITE_ONLY);
 
-    ////////////////
+    ////////////////////////////////////////
     // check if there is a gamepad connected
     numberOfGamepads = ofxGamepadHandler::get()->getNumPads();
 
@@ -41,7 +42,7 @@ void ofApp::setup() {
 			ofAddListener(pad->onButtonReleased, this, &ofApp::buttonReleased);
 	}
 	std::cout << "Number of gamepads : " << numberOfGamepads << std::endl;
-    ///////////////
+    ////////////////////////////////////////
 
     printState();
 }
@@ -85,7 +86,7 @@ void ofApp::drawFold()
     countincrementer.setUniform1f("height", displayedimage.getHeight());
     countincrementer.setUniform1i("nx", nx);
     countincrementer.setUniform1i("ny", ny);
-    countincrementer.setUniform1i("sequenceLength",curNumberOfSuccesiveFolds);
+    countincrementer.setUniform1i("sequenceLength",curNumberOfSuccesiveVariations);
     countincrementer.setUniform1i("doSinusoid",doSinusoid);
     float sinusoidStretch = 0.5*pow(1.02,sinusoidStretchCount);
     countincrementer.setUniform1f("sinusoidStretch",sinusoidStretch);
@@ -142,10 +143,10 @@ void ofApp::drawFold()
 
 void ofApp::setNewParameters()
 {
-    for(int i=0;i<curNumberOfSuccesiveFolds;i++)
+    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
     {
-        if(!addingNewFold||(i==curNumberOfSuccesiveFolds-1)){
-        if(!keepFoldTypes) parameters[i].foldType = floor(ofRandom(0,numberOfFoldTypes));
+        if(!addingNewFold||(i==curNumberOfSuccesiveVariations-1)){
+        if(!keepFoldTypes) parameters[i].foldType = floor(ofRandom(0,numberOfVariationTypes));
             changeParameters(i);
         }
     }
@@ -153,6 +154,7 @@ void ofApp::setNewParameters()
     parametersBuffer.updateData(parameters);
 }
 
+// weight is a scale factor on variation 1
 void ofApp::updateWeight(int i)
 {
     parameters[i].weight = pow(1.007,uniformWeightCount)*pow(1.01,weightCount[i]);
@@ -412,7 +414,7 @@ void ofApp::saveLog(std::string s)
 
     myFunctionsTextFile.open(filename,ofFile::WriteOnly);
 
-    int len = curNumberOfSuccesiveFolds;
+    int len = curNumberOfSuccesiveVariations;
 
     myFunctionsTextFile << " -> ";
 
@@ -522,9 +524,9 @@ void ofApp::actionRandomizeSingleFunctionParameters()
 // add function at cursor
 void ofApp::actionAddFunctionAtCursor()
 {
-        curNumberOfSuccesiveFolds = min(curNumberOfSuccesiveFolds+1,NB_MAX_VARIATIONS);
-        for(int j=curNumberOfSuccesiveFolds-1;j>indexOfChanges;j--) parameters[j] = parameters[j-1];
-        for(int j=curNumberOfSuccesiveFolds-1;j>indexOfChanges;j--) weightCount[j] = weightCount[j-1];
+        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,NB_MAX_VARIATIONS);
+        for(int j=curNumberOfSuccesiveVariations-1;j>indexOfChanges;j--) parameters[j] = parameters[j-1];
+        for(int j=curNumberOfSuccesiveVariations-1;j>indexOfChanges;j--) weightCount[j] = weightCount[j-1];
         changeParameters(indexOfChanges);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
@@ -533,10 +535,10 @@ void ofApp::actionAddFunctionAtCursor()
 // remove function at cursor
 void ofApp::actionRemoveFunctionAtCursor()
 {
-        curNumberOfSuccesiveFolds = max(1,curNumberOfSuccesiveFolds-1);
-        for(int j=indexOfChanges;j<curNumberOfSuccesiveFolds;j++) parameters[j] = parameters[j+1];
-        for(int j=indexOfChanges;j<curNumberOfSuccesiveFolds;j++) weightCount[j] = weightCount[j+1];
-        indexOfChanges = indexOfChanges%curNumberOfSuccesiveFolds;
+        curNumberOfSuccesiveVariations = max(1,curNumberOfSuccesiveVariations-1);
+        for(int j=indexOfChanges;j<curNumberOfSuccesiveVariations;j++) parameters[j] = parameters[j+1];
+        for(int j=indexOfChanges;j<curNumberOfSuccesiveVariations;j++) weightCount[j] = weightCount[j+1];
+        indexOfChanges = indexOfChanges%curNumberOfSuccesiveVariations;
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
 }
@@ -544,13 +546,13 @@ void ofApp::actionRemoveFunctionAtCursor()
 // move cursor
 void ofApp::actionMoveCursor(int step)
 {
-    indexOfChanges = (curNumberOfSuccesiveFolds+indexOfChanges+step)%curNumberOfSuccesiveFolds;
+    indexOfChanges = (curNumberOfSuccesiveVariations+indexOfChanges+step)%curNumberOfSuccesiveVariations;
 }
 
 // change function at cursor
 void ofApp::actionChangeFunctionAtCursor(int step)
 {
-    parameters[indexOfChanges].foldType = (parameters[indexOfChanges].foldType+numberOfFoldTypes+step)%numberOfFoldTypes;
+    parameters[indexOfChanges].foldType = (parameters[indexOfChanges].foldType+numberOfVariationTypes+step)%numberOfVariationTypes;
     parametersBuffer.updateData(parameters);
     renderNewOne = true;
 }
@@ -575,7 +577,7 @@ void ofApp::actionChange2D3D()
 // reset translations
 void ofApp::actionResetTranslations()
 {
-    for(int i=0;i<curNumberOfSuccesiveFolds;i++)
+    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
     {
         parameters[i].tx = 0;
         parameters[i].ty = 0;
@@ -588,7 +590,7 @@ void ofApp::actionResetTranslations()
 // reset translations
 void ofApp::actionResetScales()
 {
-    for(int i=0;i<curNumberOfSuccesiveFolds;i++)
+    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
     {
         weightCount[i] = 0;
         updateWeight(i);
@@ -601,7 +603,7 @@ void ofApp::actionResetScales()
 // reset translations
 void ofApp::actionResetRotations()
 {
-    for(int i=0;i<curNumberOfSuccesiveFolds;i++)
+    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
     {
         parameters[i].controlledRotationAngle = 0;
     }
@@ -682,7 +684,7 @@ void ofApp::keyPressed(int key) {
     if(key=='t') // change weight of all folds
     {
         uniformWeightCount++;
-        for(int i=0;i<curNumberOfSuccesiveFolds;i++) updateWeight(i);
+        for(int i=0;i<curNumberOfSuccesiveVariations;i++) updateWeight(i);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
         doPrintState = false;
@@ -690,7 +692,7 @@ void ofApp::keyPressed(int key) {
     if(key=='r') // change weight of all folds
     {
         uniformWeightCount--;
-        for(int i=0;i<curNumberOfSuccesiveFolds;i++) updateWeight(i);
+        for(int i=0;i<curNumberOfSuccesiveVariations;i++) updateWeight(i);
         parametersBuffer.updateData(parameters);
         renderNewOne = true;
         doPrintState = false;
@@ -702,15 +704,15 @@ void ofApp::keyPressed(int key) {
     if(key=='f') // increase the number of folds
     {
         addingNewFold = true;
-        curNumberOfSuccesiveFolds = min(curNumberOfSuccesiveFolds+1,NB_MAX_VARIATIONS);
+        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,NB_MAX_VARIATIONS);
         setNewParameters();
         addingNewFold = false;
         renderNewOne = true;
     }
     if(key=='d') // decrease the number of folds
     {
-        curNumberOfSuccesiveFolds = max(1,curNumberOfSuccesiveFolds-1);
-        indexOfChanges = indexOfChanges%curNumberOfSuccesiveFolds;
+        curNumberOfSuccesiveVariations = max(1,curNumberOfSuccesiveVariations-1);
+        indexOfChanges = indexOfChanges%curNumberOfSuccesiveVariations;
         renderNewOne = true;
     }
     if(key=='p') // insert before cursor
@@ -887,7 +889,7 @@ void ofApp::printState()
     std::cout << "Large resolution : " << WIDTH << " x " << HEIGHT << " ; Dots amount : " << nx << " x " << ny << std::endl;
 
 
-    for(int i=0;i<curNumberOfSuccesiveFolds;i++)
+    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
     {
         std::cout << "--> " << getName(parameters[i].foldType);
         if(indexOfChanges==i) std::cout << " <--";
@@ -918,11 +920,11 @@ void ofApp::showState()
 
     ofTranslate(1100*pow(infoP,2.8)*u,0);
 
-    for(int i=0;i<curNumberOfSuccesiveFolds;i++)
+    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
     {
         ofPushMatrix();
 
-        int revi = (curNumberOfSuccesiveFolds - i - 1);
+        int revi = (curNumberOfSuccesiveVariations - i - 1);
 
         float col = (colorMode!=0 && colorMode!=3 ? 255 : 0);
 
@@ -955,7 +957,7 @@ void ofApp::showState()
             myFont.drawString(functionString,0,0);
         }
 
-        if(i>0 && (threeD==0||(revi!=curNumberOfSuccesiveFolds/2-1)))
+        if(i>0 && (threeD==0||(revi!=curNumberOfSuccesiveVariations/2-1)))
         {
             //float troffset = 7*cos(TWO_PI*(123+0.03*frameNum - 0.11*i));
             float troffset = 7*cos(TWO_PI*ofClamp(2.3*fmod(123+0.027*frameNum - 0.15*i,2.3),0,1));

@@ -158,14 +158,14 @@ public:
     vector<RandomParameters> parameters;
     ofBufferObject parametersBuffer;
 
-    int numberOfFoldTypes = 51;
+    int numberOfVariationTypes = 51;
 
-    int curNumberOfSuccesiveFolds = 6;
+    int curNumberOfSuccesiveVariations = 6;
     int contrastCount = -8;
     int doSinusoid = 1;
     int uniformWeightCount = 0;
     bool keepFoldTypes = false;
-    int indexOfChanges = curNumberOfSuccesiveFolds-1;
+    int indexOfChanges = curNumberOfSuccesiveVariations-1;
     bool addingNewFold = false;
     float sinusoidStretchCount = 0;
     int operationsMode = 0;
@@ -210,6 +210,7 @@ public:
     ofTrueTypeFont myFont;
     ofTrueTypeFont myFontBold;
 
+    // gamepad actions
     void actionNewParameters();
     void actionSetBounder();
     void actionRandomizeAllFunctionsParameters();
