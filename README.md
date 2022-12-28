@@ -20,7 +20,7 @@ My project is real-time thanks to a compute shaders.
 
 The project contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can be obtained from the input square. This 4D point cloud is projected to 3D with stereographic projection. This 3D point cloud is then again projected with another stereographic projection to view it on the 2D screen.
 
-![3D mode overview](3dmode-overview.png)
+![3D mode overview](doc/3dmode-overview.png)
 
 ## Gamepad
 
