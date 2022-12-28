@@ -65,7 +65,7 @@ Less important keyboard shortcuts :
 | **)** | screenshot |
 | **+** / **-** | more or less opacity per particle |
 
-There are some more, see void ofApp::keyPressed(int key) in source code.
+There are some more, see `void ofApp::keyPressed(int key)` in source code (ofApp.cpp).
 
 ## Tricks to get good pictures
 
