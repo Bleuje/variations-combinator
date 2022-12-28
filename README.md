@@ -91,4 +91,4 @@ Possible future work :
 
 - release as executables
 - branch without gamepad code
-- youtube demo video should code when I'll have my gamepad available
+- youtube demo video should come when I'll have my gamepad available
