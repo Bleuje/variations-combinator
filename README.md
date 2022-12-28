@@ -4,9 +4,9 @@ This is a kind of real-time generative art drawing tool coded in openFrameworks 
 
 The following blog shows images generated with this tool : [https://math-art-variations.tumblr.com/](https://math-art-variations.tumblr.com/)
 
-Tested only on linux so far. Making this useable by other people than me is a work in progress :)
-
 openFrameworks [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (I think you should use my fork because of a fix).
+
+Tested only on linux so far. Making sure this is useable by other people than me is a work in progress... :)
 
 ![examples of outputs](doc/outputs-examples.gif)
 
