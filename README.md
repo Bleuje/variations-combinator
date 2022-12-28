@@ -18,7 +18,7 @@ The main algorithm composes a list of functions called *variations* (which I oft
 
 He made a tutorial to explain the algorithm, using Processing : [Folds](https://generateme.wordpress.com/2016/04/11/folds/)
 
-This tool is real-time thanks to a compute shaders.
+This tool is real-time thanks to [compute shaders](https://github.com/Bleuje/variations-combinator/tree/main/bin/data/shaders).
 
 You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. I translated some of them (most of them are not in previous link) from Java into glsl (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl) for source code).
 
