@@ -16,11 +16,11 @@ The main algorithm composes a list of functions called *variations* (which I oft
 
 He made a tutorial to explain the algorithm, using Processing : [Folds](https://generateme.wordpress.com/2016/04/11/folds/)
 
-My project is real-time thanks to a compute shaders.
+This tool is real-time thanks to a compute shaders.
 
 ## 3D algorithm
 
-The project contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can be obtained from the input 2D square. This 4D point cloud is projected into 3D with stereographic projection. This 3D point cloud is then again projected with another stereographic projection to view it on the 2D screen. (Keyboard shortcut for 3D mode : exclamation mark **!**)
+The tool contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can be obtained from the input 2D square. This 4D point cloud is projected into 3D with stereographic projection. This 3D point cloud is then again projected with another stereographic projection to view it on the 2D screen. (Keyboard shortcut for 3D mode : exclamation mark **!**)
 
 ![3D mode overview](doc/3dmode-overview.png)
 
