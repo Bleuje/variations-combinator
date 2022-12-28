@@ -34,7 +34,7 @@ The work on user interface is kind of focused on the use of xbox/playstation gam
 
 ## Keyboard shortcuts
 
-But it's also controllable with keyboard with even more actions, but not in a friendly way and intended for AZERTY keyboard layout.
+But it's also controllable with keyboard with more actions, but not in a friendly way and intended for AZERTY keyboard layout.
 
 ### Main keyboard shortcuts :
 
@@ -43,7 +43,7 @@ But it's also controllable with keyboard with even more actions, but not in a fr
 | **Escape** | **quit** the app |
 | **W** and **X** | function selection navigation / change cursor position |
 | **C** and **V** | change function at cursor |
-| **S** | **save** picture (with timestamp in filename), also saves the list of functions in a text file | 
+| **S** | **save** picture (with timestamp in filename), also saves the list of functions in a text file. Both in "data/images" folder | 
 | **Q** | randomize parameters of function at cursor (not possible for all variations) |
 | **Y** | randomize parameters of all functions |
 | **Z** | change all functions randomly |
@@ -79,6 +79,11 @@ GNU General Public License v3.0
 
 ## Other
 
-Feel free to contribute or share your results. Possible future work is to release this as executables.
+Feel free to contribute or share your results.
 
 Thank you generateme for the inspiration.
+
+Possible future work :
+
+- release as executables
+- branch without gamepad code
