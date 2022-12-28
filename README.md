@@ -63,6 +63,8 @@ Less important keyboard shortcuts :
 | **)** | screenshot |
 | **+** / **-** | more or less opacity per particle |
 
+There are some more, see void ofApp::keyPressed(int key) in source code.
+
 ## Tricks to get good pictures
 
 Getting interesting results is not really easy the more you become used to the tool. I think that the normal way to explore is to build the main shape from the first functions of the list and gradually work towards texture with the following functions (I mean that the first function of the list is the last function to be applied, and it's the one at the top of the screen). You can also often keep a same function but randomize its parameters. Some variations have very strong character so they become quickly boring as main shape and are better used at an intermediate or texture level.
