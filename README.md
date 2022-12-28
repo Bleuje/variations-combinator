@@ -6,7 +6,7 @@ The following blog shows images generated with this tool : [https://math-art-var
 
 Tested only on linux so far.
 
-![examples of outputs](https://bleuje.com/gifs/foldsexamples.gif)
+![examples of outputs](doc/outputs-examples.gif)
 
 ## Main algorithm
 
@@ -19,6 +19,8 @@ My project is real-time thanks to a compute shaders.
 ## 3D algorithm
 
 The project contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can be obtained from the input square. This 4D point cloud is projected to 3D with stereographic projection. This 3D point cloud is then again projected with another stereographic projection to view it on the 2D screen.
+
+![3D mode overview](3dmode-overview.png)
 
 ## Gamepad
 
