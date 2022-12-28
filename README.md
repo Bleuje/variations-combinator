@@ -6,11 +6,13 @@ The following blog shows images generated with this tool : [https://math-art-var
 
 Tested only on linux so far. Making this useable by other people than me is a work in progress :)
 
+openFrameworks [ofxGamepad](https://github.com/underdoeg/ofxGamepad) addon is used.
+
 ![examples of outputs](doc/outputs-examples.gif)
 
 ## Main algorithm
 
-The main algorithm composes a list of functions called *variations* that have a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are functions found in fractal flames algorithms, that have been translated into glsl. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/).
+The main algorithm composes a list of functions called *variations* (which I often just call functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are functions found in fractal flames algorithms, that have been translated into glsl. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/).
 
 He made a tutorial to explain the algorithm, using Processing : [Folds](https://generateme.wordpress.com/2016/04/11/folds/)
 
@@ -18,7 +20,7 @@ My project is real-time thanks to a compute shaders.
 
 ## 3D algorithm
 
-The project contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can be obtained from the input square. This 4D point cloud is projected to 3D with stereographic projection. This 3D point cloud is then again projected with another stereographic projection to view it on the 2D screen. (Keyboard shortcut for 3D mode : exclamation mark **!**)
+The project contains a 3D mode : using two 2D -> 2D functions a 4D point cloud can be obtained from the input 2D square. This 4D point cloud is projected into 3D with stereographic projection. This 3D point cloud is then again projected with another stereographic projection to view it on the 2D screen. (Keyboard shortcut for 3D mode : exclamation mark **!**)
 
 ![3D mode overview](doc/3dmode-overview.png)
 
@@ -60,3 +62,7 @@ Less important keyboard shortcuts :
 | **A** | re-render |
 | **)** | screenshot |
 | **+** / **-** | more or less opacity per particle |
+
+## Tricks to get good pictures
+
+Getting interesting results is not really easy the more you become used to the tool. I think that the normal way to explore is to build the main shape from the first functions of the list and gradually work towards texture with the following functions (I mean that the first function of the list is the last function to be applied, and it's the one at the top of the screen). You can also often keep a same function but randomize its parameters. Some variations have very strong character so they become quickly boring as main shape and are better used at an intermediate or texture level.
