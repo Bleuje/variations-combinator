@@ -40,7 +40,7 @@ But it's also controllable with keyboard with even more actions, but not in a fr
 | **W** and **X** | function selection navigation / change cursor position |
 | **C** and **V** | change function at cursor |
 | **S** | **save** picture (with timestamp in filename), also saves the list of functions in a text file | 
-| **Q** | randomize parameters of function (not possible for all variations) |
+| **Q** | randomize parameters of function at cursor (not possible for all variations) |
 | **Y** | randomize parameters of all functions |
 | **Z** | change all functions randomly |
 | **F** / **D** | add / remove function above cursor |
