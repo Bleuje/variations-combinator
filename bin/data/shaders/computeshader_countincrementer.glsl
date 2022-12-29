@@ -727,9 +727,9 @@ vec2 bmod(vec2 p, float weight, int index) {
     if(tau < params[index].bmod_radius && -tau < params[index].bmod_radius)
     {
       float m = (2.0 * params[index].bmod_radius);
-      float input = (tau + params[index].bmod_radius + params[index].bmod_distance * params[index].bmod_radius);
-      float res0 = mod(input,m) - params[index].bmod_radius;
-      if(input<0)
+      float inputValue = (tau + params[index].bmod_radius + params[index].bmod_distance * params[index].bmod_radius);
+      float res0 = mod(inputValue,m) - params[index].bmod_radius;
+      if(inputValue<0)
       {
       	tau = res0-m;
       }
@@ -749,9 +749,9 @@ vec2 bcollide(vec2 p, float weight, int index) {
     if(alt % 2 == 0)
     {
       float m = params[index].bcollide_pi_bcn;
-      float input = alt * params[index].bcollide_pi_bcn + (sigma + params[index].bcollide_bca_bcn);
-      float res0 = mod(input,m);
-      if(input<0)
+      float inputValue = alt * params[index].bcollide_pi_bcn + (sigma + params[index].bcollide_bca_bcn);
+      float res0 = mod(inputValue,m);
+      if(inputValue<0)
       {
       	sigma = res0-m;
       }
@@ -763,9 +763,9 @@ vec2 bcollide(vec2 p, float weight, int index) {
     else
     {
 	float m = params[index].bcollide_pi_bcn;
-	float input = alt * params[index].bcollide_pi_bcn + (sigma - params[index].bcollide_bca_bcn);
-	float res0 = mod(input,m);
-	if(input<0)
+	float inputValue = alt * params[index].bcollide_pi_bcn + (sigma - params[index].bcollide_bca_bcn);
+	float res0 = mod(inputValue,m);
+	if(inputValue<0)
 	{
 		sigma = res0-m;
 	}
