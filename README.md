@@ -12,6 +12,12 @@ Screenshot of the tool :
 
 ![tool screenshot](doc/sceenshot-example.png)
 
+## Linux executable
+
+[**Downloadable on itch.io**](https://bleuje.itch.io/variations-combinator)
+
+Note : functionality to save pictures does not seem to work with the executable yet.
+
 ## Building with openFrameworks
 
 [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (I think you should use my fork because of a fix).
@@ -91,6 +97,7 @@ Thank you generateme for the inspiration.
 
 Possible future work :
 
-- release as executables
+- release more executables
 - branch without gamepad code
 - youtube demo video should come when I'll have my gamepad available
+- improve code quality
