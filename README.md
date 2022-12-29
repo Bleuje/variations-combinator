@@ -62,7 +62,7 @@ But it's also controllable with keyboard with more actions, but not in a friendl
 | **F** / **D** | add / remove function above cursor |
 | **P** / **O** | add / remove function at the end of the list |
 | **N** | change **color** mode |
-| **!** | activate/deactivate the **3D mode** |
+| **!** (exclamation mark) | activate/deactivate the **3D mode** |
 | **E**| change "bounding mode" of drawing |
 
 
