@@ -5,8 +5,8 @@
 void ofApp::setup() {
     ofSetFrameRate(MAX_FPS);
 
-    myFont.load("fonts/Raleway-Regular.ttf",floor(40.0*ofGetHeight()/HEIGHT));
-    myFontBold.load("fonts/Raleway-Bold.ttf",floor(40.0*ofGetHeight()/HEIGHT));
+    myFont.load("fonts/Raleway-Regular.ttf",floor(40.0*1080/HEIGHT));
+    myFontBold.load("fonts/Raleway-Bold.ttf",floor(40.0*1080/HEIGHT));
 
     mutex.resize(WIDTH*HEIGHT);
     mutexBuffer.allocate(mutex, GL_DYNAMIC_DRAW); // array with pixel counts
@@ -400,10 +400,9 @@ void ofApp::draw() {
     }
 
     ofTranslate(120*ofGetWidth()/HEIGHT,0);
-
     ofScale(1.0*ofGetHeight()/HEIGHT);
+
     displayedimage.draw(0,0);
-    
     showState();
 }
 
@@ -901,7 +900,7 @@ void ofApp::printState()
 void ofApp::showState()
 {
 
-    float u = 50.0/30.0*ofGetHeight()/HEIGHT;
+    float u = 50.0/30.0*1080/HEIGHT;
 
     float dx = HEIGHT+35*u;
     float dy = 150*u;
@@ -912,7 +911,7 @@ void ofApp::showState()
 
     ofTranslate(dx,dy);
 
-    float ytr = 90*40.0/30.0*ofGetHeight()/HEIGHT;
+    float ytr = 90*40.0/30.0*1080/HEIGHT;
 
     int frameNum = ofGetFrameNum();
 
