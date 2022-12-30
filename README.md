@@ -22,7 +22,7 @@ Note : functionality to save pictures does not seem to work with the executable 
 
 [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (I think you should use my fork because of a fix).
 
-Latest version is tested only on linux so far, but many people have tested it previously on windows before the gamepad functionality was added. Making sure this is useable by other people than me is a work in progress... :)
+Latest version is tested only on linux so far, but many people have tested it previously on windows before the gamepad functionality was added.
 
 ## Main algorithm
 
@@ -62,7 +62,7 @@ But it's also controllable with keyboard with more actions, but not in a friendl
 | **F** / **D** | add / remove function above cursor |
 | **P** / **O** | add / remove function at the end of the list |
 | **N** | change **color** mode |
-| **!** | activate/deactivate the **3D mode** |
+| **!** (exclamation mark) | activate/deactivate the **3D mode** |
 | **E**| change "bounding mode" of drawing |
 
 
