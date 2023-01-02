@@ -28,7 +28,7 @@ uniform float projDist;
 #define TWO_PI (2.*3.1415926538)
 
 struct RandomParameters{
-	int foldType;
+	int variationType;
 	float weight;
 	float tx;
 	float ty;
@@ -1137,7 +1137,7 @@ void main(){
 		{
 			for(int i=0;i<sequenceLength;i++)
 			{
-				curPos = applyFold(curPos, params[i].foldType, i);
+				curPos = applyFold(curPos, params[i].variationType, i);
 			}
 		}
 		else if(operationsMode==1)
@@ -1145,16 +1145,16 @@ void main(){
 			
 			for(int i=0;i<sequenceLength-2;i++)
 			{
-				curPos = applyFold(curPos, params[i].foldType, i);
+				curPos = applyFold(curPos, params[i].variationType, i);
 			}
 			if(sequenceLength>1)
 			{
-				curPos = applyFold(curPos, params[sequenceLength-2].foldType, sequenceLength-2)+applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
+				curPos = applyFold(curPos, params[sequenceLength-2].variationType, sequenceLength-2)+applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 				curPos /= 1.8;
 			}
 			else
 			{
-				curPos = applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
+				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 		}
 		else if(operationsMode==2)
@@ -1162,29 +1162,29 @@ void main(){
 
 			for(int i=0;i<sequenceLength-3;i++)
 			{
-				curPos = applyFold(curPos, params[i].foldType, i);
+				curPos = applyFold(curPos, params[i].variationType, i);
 			}
 			if(sequenceLength>2)
 			{
-				curPos = applyFold(curPos, params[sequenceLength-3].foldType, sequenceLength-2)+applyFold(curPos, params[sequenceLength-2].foldType, sequenceLength-2);
+				curPos = applyFold(curPos, params[sequenceLength-3].variationType, sequenceLength-2)+applyFold(curPos, params[sequenceLength-2].variationType, sequenceLength-2);
 				curPos /= 1.8;
-				curPos = applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
+				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 			else if(sequenceLength>1)
 			{
-				curPos = applyFold(curPos, params[sequenceLength-2].foldType, sequenceLength-1);
-				curPos = applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
+				curPos = applyFold(curPos, params[sequenceLength-2].variationType, sequenceLength-1);
+				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 			else
 			{
-				curPos = applyFold(curPos, params[sequenceLength-1].foldType, sequenceLength-1);
+				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 		}
 		else if(operationsMode==3)
 		{
 			for(int i=0;i<sequenceLength;i++)
 			{
-				curPos = applyFold(curPos, params[i].foldType, i);
+				curPos = applyFold(curPos, params[i].variationType, i);
 				float a = floor(5.*prand(inputPos))/4.;
 				float sf = 0.8+0.4*a;
 				if(i<sequenceLength-1) curPos *= sf;
@@ -1216,11 +1216,11 @@ void main(){
 		vec2 curPos2 = curPos;
 		for(int i=0;i<sequenceLength/2;i++)
 		{
-			curPos1 = applyFold(curPos1, params[i].foldType, i);
+			curPos1 = applyFold(curPos1, params[i].variationType, i);
 		}
 		for(int i=sequenceLength/2;i<sequenceLength;i++)
 		{
-			curPos2 = applyFold(curPos2, params[i].foldType, i);
+			curPos2 = applyFold(curPos2, params[i].variationType, i);
 		}
 
 		float xx,yy,zz,tt;

@@ -182,7 +182,7 @@ void ofApp::setNewParameters()
     for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
         if(!addingNewFold||(i==curNumberOfSuccessiveVariations-1)){
-        if(!keepFoldTypes) variationsParameters[i].foldType = floor(ofRandom(0,numberOfVariationTypes));
+        if(!keepFoldTypes) variationsParameters[i].variationType = floor(ofRandom(0,numberOfVariationTypes));
             changeVariationParameters(i);
         }
     }
@@ -259,7 +259,7 @@ void ofApp::actionMoveCursor(int step)
 // change function at cursor
 void ofApp::actionChangeFunctionAtCursor(int step)
 {
-    variationsParameters[indexOfChanges].foldType = (variationsParameters[indexOfChanges].foldType+numberOfVariationTypes+step)%numberOfVariationTypes;
+    variationsParameters[indexOfChanges].variationType = (variationsParameters[indexOfChanges].variationType+numberOfVariationTypes+step)%numberOfVariationTypes;
     variationsParametersBuffer.updateData(variationsParameters);
     renderNewOne = true;
 }
@@ -597,7 +597,7 @@ void ofApp::printState()
 
     for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
-        std::cout << "--> " << getName(variationsParameters[i].foldType);
+        std::cout << "--> " << getName(variationsParameters[i].variationType);
         if(indexOfChanges==i) std::cout << " <--";
         std::cout << std::endl;
     }
@@ -746,52 +746,52 @@ void ofApp::saveLog(std::string s)
     {
         for(int i=0;i<length;i++)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[i].variationType) << " -> ";
         }
     }
     else if(operationsMode==1)
     {
         for(int i=0;i<length-2;i++)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[i].variationType) << " -> ";
         }
         if(length>1)
         {
-            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
+            myFunctionsTextFile << (getName(variationsParameters[length-2].variationType) + " + " + getName(variationsParameters[length-1].variationType)) << " -> ";
         }
         else
         {
-            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[length-1].variationType) << " -> ";
         }
     }
     else if(operationsMode==2)
     {
         for(int i=0;i<length-3;i++)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[i].variationType) << " -> ";
         }
         if(length>2)
         {
-            myFunctionsTextFile << (getName(variationsParameters[length-3].foldType) + " + " + getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
+            myFunctionsTextFile << (getName(variationsParameters[length-3].variationType) + " + " + getName(variationsParameters[length-2].variationType) + " + " + getName(variationsParameters[length-1].variationType)) << " -> ";
         }
         else if(length>1)
         {
-            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
+            myFunctionsTextFile << (getName(variationsParameters[length-2].variationType) + " + " + getName(variationsParameters[length-1].variationType)) << " -> ";
         }
         else
         {
-            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[length-1].variationType) << " -> ";
         }
     }
     else if(operationsMode==3)
     {
         for(int i=0;i<length;i++)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[i].variationType) << " -> ";
         }
         for(int i=0;i<length;i++)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[i].variationType) << " -> ";
         }
     }
 
@@ -885,7 +885,7 @@ void ofApp::showState()
 
         std::string cursor = (indexOfChanges==i ? "  <" : "");
 
-        std::string functionString = std::to_string(reversedIndex+1) + " : " + getName(variationsParameters[i].foldType) + cursor;
+        std::string functionString = std::to_string(reversedIndex+1) + " : " + getName(variationsParameters[i].variationType) + cursor;
 
         if(indexOfChanges==i)
         {

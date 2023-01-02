@@ -77,10 +77,10 @@ public:
     void setNewParameters();
     void printState();
     void showState();
-    std::string getName(int ind);
     void changeVariationParameters(int i);
     void updateWeight(int i);
     void saveLog(std::string s);
+    std::string getName(int ind);
 
     // gamepad actions
     void actionNewParameters();
@@ -99,7 +99,7 @@ public:
     void actionResetRotations();
     void actionChangeProjection();
 
-    void keyPressed(int key); // keyboard shorcuts here
+    void keyPressed(int key); // keyboard shortcuts here
 
     void keyReleased(int key);
     void mouseMoved(int x, int y);
@@ -121,7 +121,7 @@ public:
     ofTrueTypeFont myFont, myFontBold;
 
     struct RandomParameters{
-        int foldType;
+        int variationType;
         float weight;
         float tx;
         float ty;
