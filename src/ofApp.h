@@ -77,7 +77,7 @@ public:
     void printState();
     void showState();
     std::string getName(int ind);
-    void changeParameters(int i);
+    void changeVariationParameters(int i);
     void updateWeight(int i);
 
     int numberOfGamepads = 0;
@@ -93,8 +93,8 @@ public:
     // gamepad actions
     void actionNewParameters();
     void actionSetBounder();
-    void actionRandomizeAllFunctionsParameters();
-    void actionRandomizeSingleFunctionParameters();
+    void actionRandomizeParametersOfAllVariations();
+    void actionRandomizeParametersOfSingleVariation();
     void actionAddFunctionAtCursor();
     void actionRemoveFunctionAtCursor();
     void actionMoveCursor(int step);
@@ -241,6 +241,6 @@ public:
         float radialblur_spinvar, radialblur_zoomvar;
     };
 
-    vector<RandomParameters> parameters;
-    ofBufferObject parametersBuffer;
+    vector<RandomParameters> variationsParameters;
+    ofBufferObject variationsParametersBuffer;
 };
