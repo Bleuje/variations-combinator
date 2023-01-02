@@ -9,9 +9,9 @@
 #include <chrono>
 
 
-#define NB_MAX_VARIATIONS 15
-#define WIDTH (1024+512)
-#define HEIGHT (1024+512)
+#define MAX_NUMBER_OF_VARIATIONS 15
+#define CANVAS_WIDTH (1536)
+#define CANVAS_HEIGHT (1536)
 
 class ofApp : public ofBaseApp {
 
@@ -21,19 +21,109 @@ public:
     void draw();
     void drawFold();
 
-    std::vector<uint32_t> mutex;
-    ofBufferObject mutexBuffer;
+    std::vector<uint32_t> pixelCount;
+    ofBufferObject pixelCountBuffer;
 
-    ofShader renderingshader, countvaluesetter, countincrementer;
+    ofShader finalColorShader, pixelCountValueSetterShader, countIncrementerShader;
 
-    ofFbo displayedimage;
-    ofFbo debugImage;
+    ofFbo displayedImage, debugImage;
 
     int nx = 2048*4; // number of dots (x-axis)
     int ny = 2048*4; // number of dots (y-axis)
 
     int MAX_FPS = 60;
     float time;
+
+    double weightCount[MAX_NUMBER_OF_VARIATIONS];
+
+    int chosenProjectionDivisor = 0;
+
+    int numberOfVariationTypes = 51;
+
+    int curNumberOfSuccesiveVariations = 6;
+    int contrastCount = -8;
+    int doSinusoid = 1;
+    int uniformWeightCount = 0;
+    bool keepFoldTypes = false;
+    int indexOfChanges = curNumberOfSuccesiveVariations-1;
+    bool addingNewFold = false;
+    float sinusoidStretchCount = 0;
+    int operationsMode = 0;
+    int distortionMode = 0;
+    int colorMode = 0;
+    int animationIndex = 0;
+    float animationAngle = 0;
+    float animationRadius = 0.5;
+    int afr = 0;
+    bool renderAnimation = 0;
+    int numFrames = 100;
+    int radiusCount = 0;
+    int threeD = 0;
+    double curRot1 = 0;
+    double curRot2 = 0;
+    double curRot3 = 0;
+    double curRotAxis1 = 0;
+    double curRotAxis2 = 0;
+    double curTranslationAxis1 = 0;
+    double curTranslationAxis2 = 0;
+    double curScaleAxis1 = 0;
+    double curRotationAxis1 = 0;
+    double curL2 = -1;
+    double curR2 = -1;
+    float latest3DJSMoveTime = -1111;
+    float translationStep = 0.02;
+
+    void setNewParameters();
+    void printState();
+    void showState();
+    std::string getName(int ind);
+    void changeParameters(int i);
+    void updateWeight(int i);
+
+    int numberOfGamepads = 0;
+
+    ofFile myFunctionsTextFile;
+    void saveLog(std::string s);
+
+    bool renderNewOne = true;
+
+    ofTrueTypeFont myFont;
+    ofTrueTypeFont myFontBold;
+
+    // gamepad actions
+    void actionNewParameters();
+    void actionSetBounder();
+    void actionRandomizeAllFunctionsParameters();
+    void actionRandomizeSingleFunctionParameters();
+    void actionAddFunctionAtCursor();
+    void actionRemoveFunctionAtCursor();
+    void actionMoveCursor(int step);
+    void actionChangeFunctionAtCursor(int step);
+    void actionChangeColors();
+    void actionChange2D3D();
+    void actionResetTranslations();
+    void actionResetScales();
+    void actionResetScale(int i);
+    void actionResetRotations();
+    void actionChangeProjection();
+
+    bool doPrintState = true;
+
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y);
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    void mouseEntered(int x, int y);
+    void mouseExited(int x, int y);
+    void windowResized(int w, int h);
+    void dragEvent(ofDragInfo dragInfo);
+    void gotMessage(ofMessage msg);
+
+    void axisChanged(ofxGamepadAxisEvent &e);
+    void buttonPressed(ofxGamepadButtonEvent &e);
+    void buttonReleased(ofxGamepadButtonEvent &e);
 
     struct RandomParameters{
         int foldType;
@@ -151,98 +241,6 @@ public:
         float radialblur_spinvar, radialblur_zoomvar;
     };
 
-    double weightCount[NB_MAX_VARIATIONS];
-
-    int chosenProjectionDivisor = 0;
-
     vector<RandomParameters> parameters;
     ofBufferObject parametersBuffer;
-
-    int numberOfVariationTypes = 51;
-
-    int curNumberOfSuccesiveVariations = 6;
-    int contrastCount = -8;
-    int doSinusoid = 1;
-    int uniformWeightCount = 0;
-    bool keepFoldTypes = false;
-    int indexOfChanges = curNumberOfSuccesiveVariations-1;
-    bool addingNewFold = false;
-    float sinusoidStretchCount = 0;
-    int operationsMode = 0;
-    int distortionMode = 0;
-    int colorMode = 0;
-    int animationIndex = 0;
-    float animationAngle = 0;
-    float animationRadius = 0.5;
-    int afr = 0;
-    bool renderAnimation = 0;
-    int numFrames = 100;
-    int radiusCount = 0;
-    int threeD = 0;
-    double curRot1 = 0;
-    double curRot2 = 0;
-    double curRot3 = 0;
-    double curRotAxis1 = 0;
-    double curRotAxis2 = 0;
-    double curTranslationAxis1 = 0;
-    double curTranslationAxis2 = 0;
-    double curScaleAxis1 = 0;
-    double curRotationAxis1 = 0;
-    double curL2 = -1;
-    double curR2 = -1;
-    float latest3DJSMoveTime = -1111;
-    float translationStep = 0.02;
-
-    void setNewParameters();
-    void printState();
-    void showState();
-    std::string getName(int ind);
-    void changeParameters(int i);
-    void updateWeight(int i);
-
-    int numberOfGamepads = 0;
-
-    ofFile myFunctionsTextFile;
-    void saveLog(std::string s);
-
-    bool renderNewOne = true;
-
-    ofTrueTypeFont myFont;
-    ofTrueTypeFont myFontBold;
-
-    // gamepad actions
-    void actionNewParameters();
-    void actionSetBounder();
-    void actionRandomizeAllFunctionsParameters();
-    void actionRandomizeSingleFunctionParameters();
-    void actionAddFunctionAtCursor();
-    void actionRemoveFunctionAtCursor();
-    void actionMoveCursor(int step);
-    void actionChangeFunctionAtCursor(int step);
-    void actionChangeColors();
-    void actionChange2D3D();
-    void actionResetTranslations();
-    void actionResetScales();
-    void actionResetScale(int i);
-    void actionResetRotations();
-    void actionChangeProjection();
-
-    bool doPrintState = true;
-
-    void keyPressed(int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y);
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-    void mouseEntered(int x, int y);
-    void mouseExited(int x, int y);
-    void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
-
-    void axisChanged(ofxGamepadAxisEvent &e);
-    void buttonPressed(ofxGamepadButtonEvent &e);
-    void buttonReleased(ofxGamepadButtonEvent &e);
-
 };

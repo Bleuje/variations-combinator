@@ -5,30 +5,30 @@
 void ofApp::setup() {
     ofSetFrameRate(MAX_FPS);
 
-    myFont.load("fonts/Raleway-Regular.ttf",floor(40.0*1080/HEIGHT));
-    myFontBold.load("fonts/Raleway-Bold.ttf",floor(40.0*1080/HEIGHT));
+    myFont.load("fonts/Raleway-Regular.ttf",floor(40.0*1080/CANVAS_HEIGHT));
+    myFontBold.load("fonts/Raleway-Bold.ttf",floor(40.0*1080/CANVAS_HEIGHT));
 
-    mutex.resize(WIDTH*HEIGHT);
-    mutexBuffer.allocate(mutex, GL_DYNAMIC_DRAW); // array with pixel counts
+    pixelCount.resize(CANVAS_WIDTH*CANVAS_HEIGHT);
+    pixelCountBuffer.allocate(pixelCount, GL_DYNAMIC_DRAW); // array with pixel counts
 
-    displayedimage.allocate(WIDTH, HEIGHT, GL_RGBA32F);
-    debugImage.allocate(WIDTH, HEIGHT, GL_RGBA32F); // just useful to debug, for example to show gaussian noise values with an image
+    displayedImage.allocate(CANVAS_WIDTH, CANVAS_HEIGHT, GL_RGBA32F);
+    debugImage.allocate(CANVAS_WIDTH, CANVAS_HEIGHT, GL_RGBA32F); // just useful to debug, for example to show gaussian noise values with an image
 
-    countvaluesetter.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_countsetter.glsl");
-    countvaluesetter.linkProgram();
-    countincrementer.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_countincrementer.glsl");
-    countincrementer.linkProgram();
-    renderingshader.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_uintstoimage.glsl");
-    renderingshader.linkProgram();
+    pixelCountValueSetterShader.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_countsetter.glsl");
+    pixelCountValueSetterShader.linkProgram();
+    countIncrementerShader.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_countincrementer.glsl");
+    countIncrementerShader.linkProgram();
+    finalColorShader.setupShaderFromFile(GL_COMPUTE_SHADER, "shaders/computeshader_uintstoimage.glsl");
+    finalColorShader.linkProgram();
 
-    parameters.resize(NB_MAX_VARIATIONS);
-    for(int i=0;i<NB_MAX_VARIATIONS;i++) weightCount[i] = 0;
+    parameters.resize(MAX_NUMBER_OF_VARIATIONS);
+    for(int i=0;i<MAX_NUMBER_OF_VARIATIONS;i++) weightCount[i] = 0;
     setNewParameters();
     parametersBuffer.allocate(parameters,GL_DYNAMIC_DRAW);
     parametersBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 4);
 
-    mutexBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
-    displayedimage.getTexture().bindAsImage(3, GL_WRITE_ONLY);
+    pixelCountBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+    displayedImage.getTexture().bindAsImage(3, GL_WRITE_ONLY);
     debugImage.getTexture().bindAsImage(1, GL_WRITE_ONLY);
 
     ////////////////////////////////////////
@@ -74,33 +74,33 @@ void ofApp::drawFold()
     if(update) parametersBuffer.updateData(parameters);
     update = false;
 
-    countvaluesetter.begin();
-    countvaluesetter.setUniform1f("width", displayedimage.getWidth());
-    countvaluesetter.setUniform1f("height", displayedimage.getHeight());
-    countvaluesetter.setUniform1i("value", 0);
-    countvaluesetter.dispatchCompute(WIDTH / 32, HEIGHT / 32, 1);
-    countvaluesetter.end();
+    pixelCountValueSetterShader.begin();
+    pixelCountValueSetterShader.setUniform1f("width", displayedImage.getWidth());
+    pixelCountValueSetterShader.setUniform1f("height", displayedImage.getHeight());
+    pixelCountValueSetterShader.setUniform1i("value", 0);
+    pixelCountValueSetterShader.dispatchCompute(CANVAS_WIDTH / 32, CANVAS_HEIGHT / 32, 1);
+    pixelCountValueSetterShader.end();
 
-    countincrementer.begin();
-    countincrementer.setUniform1f("width", displayedimage.getWidth());
-    countincrementer.setUniform1f("height", displayedimage.getHeight());
-    countincrementer.setUniform1i("nx", nx);
-    countincrementer.setUniform1i("ny", ny);
-    countincrementer.setUniform1i("sequenceLength",curNumberOfSuccesiveVariations);
-    countincrementer.setUniform1i("doSinusoid",doSinusoid);
+    countIncrementerShader.begin();
+    countIncrementerShader.setUniform1f("width", displayedImage.getWidth());
+    countIncrementerShader.setUniform1f("height", displayedImage.getHeight());
+    countIncrementerShader.setUniform1i("nx", nx);
+    countIncrementerShader.setUniform1i("ny", ny);
+    countIncrementerShader.setUniform1i("sequenceLength",curNumberOfSuccesiveVariations);
+    countIncrementerShader.setUniform1i("doSinusoid",doSinusoid);
     float sinusoidStretch = 0.5*pow(1.02,sinusoidStretchCount);
-    countincrementer.setUniform1f("sinusoidStretch",sinusoidStretch);
-    countincrementer.setUniform1i("operationsMode",operationsMode);
-    countincrementer.setUniform1i("distortionMode",distortionMode);
-    countincrementer.setUniform1f("randomizer",ofRandom(0,1));
-    countincrementer.setUniform1i("aIndex",animationIndex);
-    countincrementer.setUniform1f("aAngle",animationAngle);
+    countIncrementerShader.setUniform1f("sinusoidStretch",sinusoidStretch);
+    countIncrementerShader.setUniform1i("operationsMode",operationsMode);
+    countIncrementerShader.setUniform1i("distortionMode",distortionMode);
+    countIncrementerShader.setUniform1f("randomizer",ofRandom(0,1));
+    countIncrementerShader.setUniform1i("aIndex",animationIndex);
+    countIncrementerShader.setUniform1f("aAngle",animationAngle);
     animationRadius = 0.5*pow(1.02,radiusCount);
-    countincrementer.setUniform1f("aRadius",animationRadius);
-    countincrementer.setUniform1i("aState",renderAnimation);
-    countincrementer.setUniform1i("threeD",threeD);
-    countincrementer.setUniform1f("mouseX",mouseX);
-    countincrementer.setUniform1f("mouseY",mouseY);
+    countIncrementerShader.setUniform1f("aRadius",animationRadius);
+    countIncrementerShader.setUniform1i("aState",renderAnimation);
+    countIncrementerShader.setUniform1i("threeD",threeD);
+    countIncrementerShader.setUniform1f("mouseX",mouseX);
+    countIncrementerShader.setUniform1f("mouseY",mouseY);
     float amp = 0.07;
     float tp = 0.0004*ofGetFrameNum();
     if(time >= latest3DJSMoveTime + 3)
@@ -116,29 +116,29 @@ void ofApp::drawFold()
         curRot1 += 0.1*curRotAxis1;
         curRot2 += 0.1*curRotAxis2;
     }
-    countincrementer.setUniform1f("rot1",curRot1);
-    countincrementer.setUniform1f("rot2",curRot2);
-    countincrementer.setUniform1f("rot3",curRot3);
+    countIncrementerShader.setUniform1f("rot1",curRot1);
+    countIncrementerShader.setUniform1f("rot2",curRot2);
+    countIncrementerShader.setUniform1f("rot3",curRot3);
 
-    countincrementer.setUniform1i("projectionIndex",chosenProjectionDivisor);
+    countIncrementerShader.setUniform1i("projectionIndex",chosenProjectionDivisor);
 
     //float projDist = 1.1*pow(1.003,mouseX-ofGetWidth()/2.0);
     float projDist = 3.0-ofMap(curR2,-1,1,0,1.7);
-    countincrementer.setUniform1f("projDist",projDist);
-    countincrementer.dispatchCompute(nx / 32, ny / 32, 1);
-    countincrementer.end();
+    countIncrementerShader.setUniform1f("projDist",projDist);
+    countIncrementerShader.dispatchCompute(nx / 32, ny / 32, 1);
+    countIncrementerShader.end();
 
-    renderingshader.begin();
-    renderingshader.setUniform1f("width", displayedimage.getWidth());
-    renderingshader.setUniform1f("height", displayedimage.getHeight());
+    finalColorShader.begin();
+    finalColorShader.setUniform1f("width", displayedImage.getWidth());
+    finalColorShader.setUniform1f("height", displayedImage.getHeight());
     float countPerColorChange = pow(1.02,contrastCount)*800.;
-    renderingshader.setUniform1f("countPerColorChange", countPerColorChange);
-    renderingshader.setUniform1i("colormode",colorMode);
-    renderingshader.setUniform1f("randomizer",ofRandom(0,1));
-    renderingshader.setUniform1f("time",time);
-    renderingshader.setUniform1i("threeD",threeD);
-    renderingshader.dispatchCompute(displayedimage.getWidth() / 32, displayedimage.getWidth() / 32, 1);
-    renderingshader.end();
+    finalColorShader.setUniform1f("countPerColorChange", countPerColorChange);
+    finalColorShader.setUniform1i("colormode",colorMode);
+    finalColorShader.setUniform1f("randomizer",ofRandom(0,1));
+    finalColorShader.setUniform1f("time",time);
+    finalColorShader.setUniform1i("threeD",threeD);
+    finalColorShader.dispatchCompute(displayedImage.getWidth() / 32, displayedImage.getWidth() / 32, 1);
+    finalColorShader.end();
 }
 
 void ofApp::setNewParameters()
@@ -389,20 +389,21 @@ void ofApp::draw() {
     if(colorMode!=0 && colorMode!=3) ofBackground(0);
     else ofBackground(255*0.88);
 
-    if(renderNewOne 
-    || (threeD>=1 && (ofGetFrameNum()%2==0)) 
-    || (threeD==0 && (curTranslationAxis1!=0 || curTranslationAxis2!=0))
-    || (threeD==0 && (curScaleAxis1!=0))
+    // compute new drawing only if needed
+    if(renderNewOne // using this variable that forces a new drawing
+    || (threeD>=1 && (ofGetFrameNum()%2==0)) // always draw in 3D mode but half of FPS to avoid too much GPU heat :) 
+    || (threeD==0 && (curTranslationAxis1!=0 || curTranslationAxis2!=0)) // if we translate a variation
+    || (threeD==0 && (curScaleAxis1!=0)) // if we rotate a variation
     )
     {
         drawFold();
         renderNewOne = false;
     }
 
-    ofTranslate(120*ofGetWidth()/HEIGHT,0);
-    ofScale(1.0*ofGetHeight()/HEIGHT);
+    ofTranslate(120*ofGetWidth()/CANVAS_HEIGHT,0);
+    ofScale(1.0*ofGetHeight()/CANVAS_HEIGHT);
 
-    displayedimage.draw(0,0);
+    displayedImage.draw(0,0);
     showState();
 }
 
@@ -523,7 +524,7 @@ void ofApp::actionRandomizeSingleFunctionParameters()
 // add function at cursor
 void ofApp::actionAddFunctionAtCursor()
 {
-        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,NB_MAX_VARIATIONS);
+        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,MAX_NUMBER_OF_VARIATIONS);
         for(int j=curNumberOfSuccesiveVariations-1;j>indexOfChanges;j--) parameters[j] = parameters[j-1];
         for(int j=curNumberOfSuccesiveVariations-1;j>indexOfChanges;j--) weightCount[j] = weightCount[j-1];
         changeParameters(indexOfChanges);
@@ -645,7 +646,7 @@ void ofApp::keyPressed(int key) {
         std::string s = ofGetTimestampString();
         //ofSaveScreen("image_"+s+"_small.png");
         ofPixels pixels;
-        displayedimage.readToPixels(pixels);
+        displayedImage.readToPixels(pixels);
         //ofGetGLRenderer()->saveFullViewport(pixels);
         ofSaveImage(pixels,"images/image_"+s+"_large.png", OF_IMAGE_QUALITY_BEST);
         std::cout << "Saved image " << s << std::endl;
@@ -703,7 +704,7 @@ void ofApp::keyPressed(int key) {
     if(key=='f') // increase the number of folds
     {
         addingNewFold = true;
-        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,NB_MAX_VARIATIONS);
+        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,MAX_NUMBER_OF_VARIATIONS);
         setNewParameters();
         addingNewFold = false;
         renderNewOne = true;
@@ -885,7 +886,7 @@ void ofApp::printState()
     if(distortionMode==1) std::cout << "distortion at center" << std::endl;
     if(distortionMode==2) std::cout << "lerp from input mode" << std::endl;
 
-    std::cout << "Large resolution : " << WIDTH << " x " << HEIGHT << " ; Dots amount : " << nx << " x " << ny << std::endl;
+    std::cout << "Large resolution : " << CANVAS_WIDTH << " x " << CANVAS_HEIGHT << " ; Dots amount : " << nx << " x " << ny << std::endl;
 
 
     for(int i=0;i<curNumberOfSuccesiveVariations;i++)
@@ -900,9 +901,9 @@ void ofApp::printState()
 void ofApp::showState()
 {
 
-    float u = 50.0/30.0*1080/HEIGHT;
+    float u = 50.0/30.0*1080/CANVAS_HEIGHT;
 
-    float dx = HEIGHT+35*u;
+    float dx = CANVAS_HEIGHT+35*u;
     float dy = 150*u;
 
     float infoP = ofMap(curL2,-0.8,0.85,0,1,true);
@@ -911,7 +912,7 @@ void ofApp::showState()
 
     ofTranslate(dx,dy);
 
-    float ytr = 90*40.0/30.0*1080/HEIGHT;
+    float ytr = 90*40.0/30.0*1080/CANVAS_HEIGHT;
 
     int frameNum = ofGetFrameNum();
 
