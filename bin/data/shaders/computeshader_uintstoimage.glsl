@@ -7,6 +7,7 @@ uniform int colormode;
 uniform float randomizer;
 uniform float time;
 uniform int threeD;
+uniform float greyBackgroundFactor;
 
 layout(std430,binding=0) buffer mutex
 {
@@ -96,7 +97,7 @@ void main(){
 	vec4 color0 = vec4(greyValue,greyValue,greyValue,1.0);
 	
 	vec3 rgb;
-	if(colormode==0) rgb = vec3(0.88)-0.76*tanh(color0.rgb); // black on light grey
+	if(colormode==0) rgb = vec3(greyBackgroundFactor)-0.76*tanh(color0.rgb); // black on light grey
 	if(colormode==1) rgb = vec3(tanh(color0.rgb*0.7)); // white on black
 	if(colormode>=2)
 	{
@@ -110,7 +111,7 @@ void main(){
 		if(colormode==4) color0.rgb = pal(0.8*greyValue2, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(2.0,1.0,0.0),vec3(0.5,0.20,0.25));
 		
 		if(colormode!=3) rgb = aces(vec3(tanh(pow(max(greyValue-0.01,0),0.05))*tanh(color0.rgb)));
-		else rgb = vec3(0.88)-vec3(tanh(pow(max(greyValue-0.01,0),0.05))*tanh(color0.rgb));
+		else rgb = vec3(greyBackgroundFactor)-vec3(tanh(pow(max(greyValue-0.01,0),0.05))*tanh(color0.rgb));
 
 		//if(threeD>0) rgb = pow(rgb,vec3(0.8));
 	}
