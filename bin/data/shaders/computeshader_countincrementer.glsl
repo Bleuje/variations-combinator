@@ -1300,15 +1300,15 @@ void main(){
 	
 	ivec2 iTarget = ivec2(target+gn);
 	
+	// for loops to draw on pixels around target, keeping the code but it's not used
 	for(int i=-1;i<=1;i++)
 	for(int j=-1;j<=1;j++)
 	{
-		if(i!=0||j!=0) continue;
-		if(iTarget.x+i>=width||iTarget.x+i<0||iTarget.y+j>=height||iTarget.y+j<0) continue;
+		if(i!=0||j!=0) continue; // this is why the for loops are actually unused, we actually change a single pixel
+		if(iTarget.x+i>=width||iTarget.x+i<0||iTarget.y+j>=height||iTarget.y+j<0) continue; // skip if we fall outside the canvas
 		ivec2 pos = ivec2(LoopedPosition(vec2(iTarget.x+i,iTarget.y+j)));
-		uint val;
-		val = uint(3-abs(i)-abs(j));
+		uint val = uint(3-abs(i)-abs(j)); // more value at center of for loops
 		if(threeD==1) val = uint((3-abs(i)-abs(j))*factor);
-		atomicAdd(m[ pos.x * int(height) + pos.y ],val);
+		atomicAdd(m[ pos.x * int(height) + pos.y ],val); // incrementing the pixel value we fall on, the point of this whole shader
 	}
 }
