@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-// intialization
+// initialization
 void ofApp::setup() {
     ofSetFrameRate(MAX_FPS);
 
