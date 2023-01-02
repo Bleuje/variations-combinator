@@ -12,6 +12,7 @@
 #define MAX_NUMBER_OF_VARIATIONS 15
 #define CANVAS_WIDTH (1536)
 #define CANVAS_HEIGHT (1536)
+#define GREY_BACKGROUND_FACTOR 0.88
 
 class ofApp : public ofBaseApp {
 
@@ -40,12 +41,12 @@ public:
 
     int numberOfVariationTypes = 51;
 
-    int curNumberOfSuccesiveVariations = 6;
+    int curNumberOfSuccessiveVariations = 6;
     int contrastCount = -8;
     int doSinusoid = 1;
     int uniformWeightCount = 0;
     bool keepFoldTypes = false;
-    int indexOfChanges = curNumberOfSuccesiveVariations-1;
+    int indexOfChanges = curNumberOfSuccessiveVariations-1;
     bool addingNewFold = false;
     float sinusoidStretchCount = 0;
     int operationsMode = 0;

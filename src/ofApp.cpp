@@ -86,7 +86,7 @@ void ofApp::drawFold()
     countIncrementerShader.setUniform1f("height", displayedImage.getHeight());
     countIncrementerShader.setUniform1i("nx", nx);
     countIncrementerShader.setUniform1i("ny", ny);
-    countIncrementerShader.setUniform1i("sequenceLength",curNumberOfSuccesiveVariations);
+    countIncrementerShader.setUniform1i("sequenceLength",curNumberOfSuccessiveVariations);
     countIncrementerShader.setUniform1i("doSinusoid",doSinusoid);
     float sinusoidStretch = 0.5*pow(1.02,sinusoidStretchCount);
     countIncrementerShader.setUniform1f("sinusoidStretch",sinusoidStretch);
@@ -138,15 +138,16 @@ void ofApp::drawFold()
     finalColorShader.setUniform1f("randomizer",ofRandom(0,1));
     finalColorShader.setUniform1f("time",time);
     finalColorShader.setUniform1i("threeD",threeD);
+    finalColorShader.setUniform1f("greyBackgroundFactor",GREY_BACKGROUND_FACTOR);
     finalColorShader.dispatchCompute(displayedImage.getWidth() / 32, displayedImage.getWidth() / 32, 1);
     finalColorShader.end();
 }
 
 void ofApp::setNewParameters()
 {
-    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
-        if(!addingNewFold||(i==curNumberOfSuccesiveVariations-1)){
+        if(!addingNewFold||(i==curNumberOfSuccessiveVariations-1)){
         if(!keepFoldTypes) variationsParameters[i].foldType = floor(ofRandom(0,numberOfVariationTypes));
             changeVariationParameters(i);
         }
@@ -172,7 +173,7 @@ void ofApp::update() {
     ofSetColor(255);
 
     if(colorMode!=0 && colorMode!=3) ofBackground(0);
-    else ofBackground(255*0.88);
+    else ofBackground(255*GREY_BACKGROUND_FACTOR);
 
     // compute new drawing only if needed
     if(renderNewOne // using this variable that forces a new drawing
@@ -184,7 +185,6 @@ void ofApp::update() {
         drawFold();
         renderNewOne = false;
     }
-
 }
 
 //--------------------------------------------------------------
@@ -203,71 +203,58 @@ void ofApp::saveLog(std::string s)
 
     myFunctionsTextFile.open(filename,ofFile::WriteOnly);
 
-    int len = curNumberOfSuccesiveVariations;
+    int length = curNumberOfSuccessiveVariations;
 
     myFunctionsTextFile << " -> ";
 
     if(operationsMode==0)
     {
-        for(int i=0;i<len;i++)
+        for(int i=0;i<length;i++)
         {
             myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
         }
     }
     else if(operationsMode==1)
     {
-        for(int i=0;i<len-2;i++)
+        for(int i=0;i<length-2;i++)
         {
             myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
         }
-        if(len>1)
+        if(length>1)
         {
-            myFunctionsTextFile << (getName(variationsParameters[len-2].foldType) + " + " + getName(variationsParameters[len-1].foldType)) << " -> ";
+            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
         }
         else
         {
-            myFunctionsTextFile << getName(variationsParameters[len-1].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
         }
     }
-    /*
     else if(operationsMode==2)
     {
-        for(int i=0;i<len/2;i++)
+        for(int i=0;i<length-3;i++)
         {
             myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
         }
-        myFunctionsTextFile << std::endl << " +" << std::endl << " -> ";
-        for(int i=len/2;i<len;i++)
+        if(length>2)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+            myFunctionsTextFile << (getName(variationsParameters[length-3].foldType) + " + " + getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
         }
-    }*/
-    else if(operationsMode==2)
-    {
-        for(int i=0;i<len-3;i++)
+        else if(length>1)
         {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
-        }
-        if(len>2)
-        {
-            myFunctionsTextFile << (getName(variationsParameters[len-3].foldType) + " + " + getName(variationsParameters[len-2].foldType) + " + " + getName(variationsParameters[len-1].foldType)) << " -> ";
-        }
-        else if(len>1)
-        {
-            myFunctionsTextFile << (getName(variationsParameters[len-2].foldType) + " + " + getName(variationsParameters[len-1].foldType)) << " -> ";
+            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
         }
         else
         {
-            myFunctionsTextFile << getName(variationsParameters[len-1].foldType) << " -> ";
+            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
         }
     }
     else if(operationsMode==3)
     {
-        for(int i=0;i<len;i++)
+        for(int i=0;i<length;i++)
         {
             myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
         }
-        for(int i=0;i<len;i++)
+        for(int i=0;i<length;i++)
         {
             myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
         }
@@ -313,9 +300,9 @@ void ofApp::actionRandomizeParametersOfSingleVariation()
 // add function at cursor
 void ofApp::actionAddFunctionAtCursor()
 {
-        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,MAX_NUMBER_OF_VARIATIONS);
-        for(int j=curNumberOfSuccesiveVariations-1;j>indexOfChanges;j--) variationsParameters[j] = variationsParameters[j-1];
-        for(int j=curNumberOfSuccesiveVariations-1;j>indexOfChanges;j--) weightCount[j] = weightCount[j-1];
+        curNumberOfSuccessiveVariations = min(curNumberOfSuccessiveVariations+1,MAX_NUMBER_OF_VARIATIONS);
+        for(int j=curNumberOfSuccessiveVariations-1;j>indexOfChanges;j--) variationsParameters[j] = variationsParameters[j-1];
+        for(int j=curNumberOfSuccessiveVariations-1;j>indexOfChanges;j--) weightCount[j] = weightCount[j-1];
         changeVariationParameters(indexOfChanges);
         variationsParametersBuffer.updateData(variationsParameters);
         renderNewOne = true;
@@ -324,10 +311,10 @@ void ofApp::actionAddFunctionAtCursor()
 // remove function at cursor
 void ofApp::actionRemoveFunctionAtCursor()
 {
-        curNumberOfSuccesiveVariations = max(1,curNumberOfSuccesiveVariations-1);
-        for(int j=indexOfChanges;j<curNumberOfSuccesiveVariations;j++) variationsParameters[j] = variationsParameters[j+1];
-        for(int j=indexOfChanges;j<curNumberOfSuccesiveVariations;j++) weightCount[j] = weightCount[j+1];
-        indexOfChanges = indexOfChanges%curNumberOfSuccesiveVariations;
+        curNumberOfSuccessiveVariations = max(1,curNumberOfSuccessiveVariations-1);
+        for(int j=indexOfChanges;j<curNumberOfSuccessiveVariations;j++) variationsParameters[j] = variationsParameters[j+1];
+        for(int j=indexOfChanges;j<curNumberOfSuccessiveVariations;j++) weightCount[j] = weightCount[j+1];
+        indexOfChanges = indexOfChanges%curNumberOfSuccessiveVariations;
         variationsParametersBuffer.updateData(variationsParameters);
         renderNewOne = true;
 }
@@ -335,7 +322,7 @@ void ofApp::actionRemoveFunctionAtCursor()
 // move cursor
 void ofApp::actionMoveCursor(int step)
 {
-    indexOfChanges = (curNumberOfSuccesiveVariations+indexOfChanges+step)%curNumberOfSuccesiveVariations;
+    indexOfChanges = (curNumberOfSuccessiveVariations+indexOfChanges+step)%curNumberOfSuccessiveVariations;
 }
 
 // change function at cursor
@@ -366,7 +353,7 @@ void ofApp::actionChange2D3D()
 // reset translations
 void ofApp::actionResetTranslations()
 {
-    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
         variationsParameters[i].tx = 0;
         variationsParameters[i].ty = 0;
@@ -379,7 +366,7 @@ void ofApp::actionResetTranslations()
 // reset translations
 void ofApp::actionResetScales()
 {
-    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
         weightCount[i] = 0;
         updateWeight(i);
@@ -392,7 +379,7 @@ void ofApp::actionResetScales()
 // reset translations
 void ofApp::actionResetRotations()
 {
-    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
         variationsParameters[i].controlledRotationAngle = 0;
     }
@@ -473,7 +460,7 @@ void ofApp::keyPressed(int key) {
     if(key=='t') // change weight of all folds
     {
         uniformWeightCount++;
-        for(int i=0;i<curNumberOfSuccesiveVariations;i++) updateWeight(i);
+        for(int i=0;i<curNumberOfSuccessiveVariations;i++) updateWeight(i);
         variationsParametersBuffer.updateData(variationsParameters);
         renderNewOne = true;
         doPrintState = false;
@@ -481,7 +468,7 @@ void ofApp::keyPressed(int key) {
     if(key=='r') // change weight of all folds
     {
         uniformWeightCount--;
-        for(int i=0;i<curNumberOfSuccesiveVariations;i++) updateWeight(i);
+        for(int i=0;i<curNumberOfSuccessiveVariations;i++) updateWeight(i);
         variationsParametersBuffer.updateData(variationsParameters);
         renderNewOne = true;
         doPrintState = false;
@@ -493,15 +480,15 @@ void ofApp::keyPressed(int key) {
     if(key=='f') // increase the number of folds
     {
         addingNewFold = true;
-        curNumberOfSuccesiveVariations = min(curNumberOfSuccesiveVariations+1,MAX_NUMBER_OF_VARIATIONS);
+        curNumberOfSuccessiveVariations = min(curNumberOfSuccessiveVariations+1,MAX_NUMBER_OF_VARIATIONS);
         setNewParameters();
         addingNewFold = false;
         renderNewOne = true;
     }
     if(key=='d') // decrease the number of folds
     {
-        curNumberOfSuccesiveVariations = max(1,curNumberOfSuccesiveVariations-1);
-        indexOfChanges = indexOfChanges%curNumberOfSuccesiveVariations;
+        curNumberOfSuccessiveVariations = max(1,curNumberOfSuccessiveVariations-1);
+        indexOfChanges = indexOfChanges%curNumberOfSuccessiveVariations;
         renderNewOne = true;
     }
     if(key=='p') // insert before cursor
@@ -678,7 +665,7 @@ void ofApp::printState()
     std::cout << "Large resolution : " << CANVAS_WIDTH << " x " << CANVAS_HEIGHT << " ; Dots amount : " << nx << " x " << ny << std::endl;
 
 
-    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
         std::cout << "--> " << getName(variationsParameters[i].foldType);
         if(indexOfChanges==i) std::cout << " <--";
@@ -709,11 +696,11 @@ void ofApp::showState()
 
     ofTranslate(1100*pow(infoP,2.8)*u,0);
 
-    for(int i=0;i<curNumberOfSuccesiveVariations;i++)
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
     {
         ofPushMatrix();
 
-        int revi = (curNumberOfSuccesiveVariations - i - 1);
+        int revi = (curNumberOfSuccessiveVariations - i - 1);
 
         float col = (colorMode!=0 && colorMode!=3 ? 255 : 0);
 
@@ -746,7 +733,7 @@ void ofApp::showState()
             myFont.drawString(functionString,0,0);
         }
 
-        if(i>0 && (threeD==0||(revi!=curNumberOfSuccesiveVariations/2-1)))
+        if(i>0 && (threeD==0||(revi!=curNumberOfSuccessiveVariations/2-1)))
         {
             //float troffset = 7*cos(TWO_PI*(123+0.03*frameNum - 0.11*i));
             float troffset = 7*cos(TWO_PI*ofClamp(2.3*fmod(123+0.027*frameNum - 0.15*i,2.3),0,1));
