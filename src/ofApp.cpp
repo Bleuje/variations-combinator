@@ -47,6 +47,40 @@ void ofApp::setup() {
     printState();
 }
 
+//--------------------------------------------------------------
+void ofApp::update() {
+    time = 1.0*ofGetFrameNum()/MAX_FPS;
+
+    std::stringstream strm;
+    strm << "fps: " << ofGetFrameRate();
+    ofSetWindowTitle(strm.str());
+
+    ofSetColor(255);
+
+    if(colorMode!=0 && colorMode!=3) ofBackground(0);
+    else ofBackground(255*GREY_BACKGROUND_FACTOR);
+
+    // compute new drawing only if needed
+    if(renderNewOne // using this variable that forces a new drawing
+    || (threeD>=1 && (ofGetFrameNum()%2==0)) // always draw in 3D mode but half of FPS to avoid too much GPU heat :) 
+    || (threeD==0 && (curTranslationAxis1!=0 || curTranslationAxis2!=0)) // if we translate a variation
+    || (threeD==0 && (curScaleAxis1!=0)) // if we rotate a variation
+    )
+    {
+        drawFold();
+        renderNewOne = false;
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::draw() {
+    ofTranslate(120*ofGetWidth()/CANVAS_HEIGHT,0);
+    ofScale(1.0*ofGetHeight()/CANVAS_HEIGHT);
+
+    displayedImage.draw(0,0);
+    showState();
+}
+
 // shader calls to compute image
 void ofApp::drawFold()
 {
@@ -162,109 +196,6 @@ void ofApp::updateWeight(int i)
     variationsParameters[i].weight = pow(1.007,uniformWeightCount)*pow(1.01,weightCount[i]);
 }
 
-//--------------------------------------------------------------
-void ofApp::update() {
-    time = 1.0*ofGetFrameNum()/MAX_FPS;
-
-    std::stringstream strm;
-    strm << "fps: " << ofGetFrameRate();
-    ofSetWindowTitle(strm.str());
-
-    ofSetColor(255);
-
-    if(colorMode!=0 && colorMode!=3) ofBackground(0);
-    else ofBackground(255*GREY_BACKGROUND_FACTOR);
-
-    // compute new drawing only if needed
-    if(renderNewOne // using this variable that forces a new drawing
-    || (threeD>=1 && (ofGetFrameNum()%2==0)) // always draw in 3D mode but half of FPS to avoid too much GPU heat :) 
-    || (threeD==0 && (curTranslationAxis1!=0 || curTranslationAxis2!=0)) // if we translate a variation
-    || (threeD==0 && (curScaleAxis1!=0)) // if we rotate a variation
-    )
-    {
-        drawFold();
-        renderNewOne = false;
-    }
-}
-
-//--------------------------------------------------------------
-void ofApp::draw() {
-    ofTranslate(120*ofGetWidth()/CANVAS_HEIGHT,0);
-    ofScale(1.0*ofGetHeight()/CANVAS_HEIGHT);
-
-    displayedImage.draw(0,0);
-    showState();
-}
-
-// save list of functions in text file
-void ofApp::saveLog(std::string s)
-{
-    std::string filename = "images/functions_" + s + ".txt";
-
-    myFunctionsTextFile.open(filename,ofFile::WriteOnly);
-
-    int length = curNumberOfSuccessiveVariations;
-
-    myFunctionsTextFile << " -> ";
-
-    if(operationsMode==0)
-    {
-        for(int i=0;i<length;i++)
-        {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
-        }
-    }
-    else if(operationsMode==1)
-    {
-        for(int i=0;i<length-2;i++)
-        {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
-        }
-        if(length>1)
-        {
-            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
-        }
-        else
-        {
-            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
-        }
-    }
-    else if(operationsMode==2)
-    {
-        for(int i=0;i<length-3;i++)
-        {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
-        }
-        if(length>2)
-        {
-            myFunctionsTextFile << (getName(variationsParameters[length-3].foldType) + " + " + getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
-        }
-        else if(length>1)
-        {
-            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
-        }
-        else
-        {
-            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
-        }
-    }
-    else if(operationsMode==3)
-    {
-        for(int i=0;i<length;i++)
-        {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
-        }
-        for(int i=0;i<length;i++)
-        {
-            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
-        }
-    }
-
-    myFunctionsTextFile.close();
-
-    std::cout << "Saved functions." << std::endl;
-}
-
 // try other folds
 void ofApp::actionNewParameters()
 {
@@ -336,7 +267,7 @@ void ofApp::actionChangeFunctionAtCursor(int step)
 // change colors
 void ofApp::actionChangeColors()
 {
-    colorMode = (colorMode+1)%3;
+    colorMode = (colorMode+1)%3; // with this modulo only the 3 first color modes are used
     renderNewOne = true;
 }
 
@@ -406,6 +337,7 @@ void ofApp::actionChangeProjection()
 }
 
 //--------------------------------------------------------------
+// keyboard interaction
 void ofApp::keyPressed(int key) {
     doPrintState = true;
     if(key=='a') // rerender the same thing
@@ -420,10 +352,8 @@ void ofApp::keyPressed(int key) {
     if(key=='s') // save image
     {
         std::string s = ofGetTimestampString();
-        //ofSaveScreen("image_"+s+"_small.png");
         ofPixels pixels;
         displayedImage.readToPixels(pixels);
-        //ofGetGLRenderer()->saveFullViewport(pixels);
         ofSaveImage(pixels,"images/image_"+s+"_large.png", OF_IMAGE_QUALITY_BEST);
         std::cout << "Saved image " << s << std::endl;
         doPrintState = false;
@@ -673,260 +603,6 @@ void ofApp::printState()
     }
 }
 
-// show info on screen
-void ofApp::showState()
-{
-
-    float u = 50.0/30.0*1080/CANVAS_HEIGHT;
-
-    float dx = CANVAS_HEIGHT+35*u;
-    float dy = 150*u;
-
-    float infoP = ofMap(curL2,-0.8,0.85,0,1,true);
-
-    ofPushMatrix();
-
-    ofTranslate(dx,dy);
-
-    float ytr = 90*40.0/30.0*1080/CANVAS_HEIGHT;
-
-    int frameNum = ofGetFrameNum();
-
-    ofPushMatrix();
-
-    ofTranslate(1100*pow(infoP,2.8)*u,0);
-
-    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
-    {
-        ofPushMatrix();
-
-        int revi = (curNumberOfSuccessiveVariations - i - 1);
-
-        float col = (colorMode!=0 && colorMode!=3 ? 255 : 0);
-
-        ofTranslate(0,ytr*revi);
-
-        std::string cursor = (indexOfChanges==i ? "  <" : "");
-
-        std::string functionString = std::to_string(revi+1) + " : " + getName(variationsParameters[i].foldType) + cursor;
-
-        if(indexOfChanges==i)
-        {
-            float strLength = functionString.size();
-
-
-            ofPushMatrix();
-            ofSetColor(col);
-            ofTranslate(-10*u,-28*u);
-            ofDrawRectangle(0,0,20*u+myFont.stringWidth(functionString),37*u);
-            ofPopMatrix();
-
-            ofSetColor(255-col);
-            ofPushMatrix();
-            //ofScale(1+0.075*(0.5+0.5*cos(0.5*frameNum))*15/strLength,1);
-            myFont.drawString(functionString,0,0);
-            ofPopMatrix();
-        }
-        else
-        {
-            ofSetColor(col);
-            myFont.drawString(functionString,0,0);
-        }
-
-        if(i>0 && (threeD==0||(revi!=curNumberOfSuccessiveVariations/2-1)))
-        {
-            //float troffset = 7*cos(TWO_PI*(123+0.03*frameNum - 0.11*i));
-            float troffset = 7*cos(TWO_PI*ofClamp(2.3*fmod(123+0.027*frameNum - 0.15*i,2.3),0,1));
-
-            ofPushMatrix();
-            ofTranslate(1,35 + troffset);
-            ofScale(1,0.6);
-            ofSetColor(col);
-            myFont.drawString("^",0,0);
-            ofTranslate(5.5,15);
-            myFont.drawString("|",0,0);
-            ofPopMatrix();
-        }
-
-        ofPopMatrix();
-    }
-
-    ofPopMatrix();
-
-    ofTranslate(0,0);
-
-    ofScale(0.8);
-
-    float infoAlpha = 255*pow(infoP,2.5);
-
-    float alpha0 = 255-infoAlpha;
-
-    float col = (colorMode!=0 && colorMode!=3 ? 255 : 0);
-
-    if(numberOfGamepads>0)
-    {
-        ofPushMatrix();
-        ofTranslate(500*u,-50-300*u*infoP);
-        ofSetColor(col,alpha0*0.75);
-        ofScale(0.9);
-        myFont.drawString("L2 to show info and controls",0,0);
-        ofPopMatrix();
-    }
-
-    if(numberOfGamepads>0 && infoP>0.0001)
-    {
-        ofPushMatrix();
-
-        float einfoP = 1-pow(1-infoP,2.5);
-
-        ofTranslate(0,100*u*(1-einfoP));
-
-        ytr *= 0.8;
-
-        std::string howItWorksString = "HOW IT WORKS :";
-        ofPushMatrix();
-        ofSetColor(col,infoAlpha);
-        ofTranslate(-10*u,-30*u);
-        ofDrawRectangle(0,0,20*u+myFont.stringWidth(howItWorksString),38*u);
-        ofPopMatrix();
-        ofSetColor(255-col,infoAlpha);
-        myFont.drawString(howItWorksString,0,0);
-        ofSetColor(col,infoAlpha);
-
-        ofTranslate(0,ytr);
-        myFont.drawString("Particles initially filling a square go through several",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("functions by composition (following the arrows).",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("Most of those functions have random parameters.",0,0);
-        ofTranslate(0,ytr);
-        ofTranslate(0,ytr);
-
-        std::string controlsString = "CONTROLS :";
-        ofPushMatrix();
-        ofSetColor(col,infoAlpha);
-        ofTranslate(-10*u,-30*u);
-        ofDrawRectangle(0,0,20*u+myFont.stringWidth(controlsString),38*u);
-        ofPopMatrix();
-        ofSetColor(255-col,infoAlpha);
-        myFont.drawString(controlsString,0,0);
-        ofSetColor(col,infoAlpha);
-
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : select and change functions",0,0);
-        myFontBold.drawString("Pad",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : random new set of functions",0,0);
-        myFontBold.drawString("A",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : randomize parameters of all functions",0,0);
-        myFontBold.drawString("B",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : randomize parameters of pointed function",0,0);
-        myFontBold.drawString("X",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : in 2D, keep particles in screen or not",0,0);
-        myFontBold.drawString("Y",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : in 3D, change 3D projection",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : add/remove function",0,0);
-        myFontBold.drawString("L1/R1",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : scale/rotation on function",0,0);
-        myFontBold.drawString("Left joystick",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : translation on function (view rotation in 3D)",0,0);
-        myFontBold.drawString("Right joystick",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : 2D/3D modes",0,0);
-        myFontBold.drawString("Middle left",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("                         : color modes",0,0);
-        myFontBold.drawString("Middle right",0,0);
-        ofTranslate(0,ytr);
-        ofTranslate(0,ytr);
-
-        std::string aboutString = "ABOUT :";
-        ofPushMatrix();
-        ofSetColor(col,infoAlpha);
-        ofTranslate(-10*u,-30*u);
-        ofDrawRectangle(0,0,20*u+myFont.stringWidth(aboutString),38*u);
-        ofPopMatrix();
-        ofSetColor(255-col,infoAlpha);
-        myFont.drawString(aboutString,0,0);
-        ofSetColor(col,infoAlpha);
-
-        ofTranslate(0,ytr);
-        myFont.drawString("By Etienne Jacob",0,0);
-        ofTranslate(0,ytr);
-        myFont.drawString("Inspired by work from GenerateMe (Twitter: @generateme_blog)",0,0);
-
-        ofPopMatrix();
-    }
-
-    ofPopMatrix();
-}
-
-std::string ofApp::getName(int ind)
-{
-    switch(ind){
-        case 0: return "lines"; break;
-        case 1: return "twintrian"; break;
-        case 2: return "julian"; break;
-        case 3: return "juliascope"; break;
-        case 4: return "rectangles"; break;
-        case 5: return "sinusoidal"; break;
-        case 6: return "scry"; break;
-        case 7: return "fan2"; break;
-        case 8: return "pdj"; break;
-        case 9: return "butterfly"; break;
-        case 10: return "wedgejulia"; break;
-        case 11: return "rotate"; break;
-        case 12: return "cross"; break;
-        case 13: return "curl"; break;
-        case 14: return "rings2"; break;
-        case 15: return "heart"; break;
-        case 16: return "ex"; break;
-        case 17: return "popcorn"; break;
-        case 18: return "waves"; break;
-        case 19: return "horseshoe"; break;
-        case 20: return "polar"; break;
-        case 21: return "ennepers"; break;
-        case 22: return "cell"; break;
-        case 23: return "boarders"; break;
-        case 24: return "supershape"; break;
-        case 25: return "loonie"; break;
-        case 26: return "foci"; break;
-        case 27: return "blade"; break;
-        case 28: return "ngon"; break;
-        case 29: return "diamond"; break;
-        case 30: return "oscilloscope"; break;
-        case 31: return "oscilloscope2"; break;
-        case 32: return "blocky"; break;
-        case 33: return "waves2"; break;
-        case 34: return "blob"; break;
-        case 35: return "bsplit"; break;
-        case 36: return "bswirl"; break;
-        case 37: return "bwraps7"; break;
-        case 38: return "exponential"; break;
-        case 39: return "blurzoom"; break;
-        case 40: return "bmod"; break;
-        case 41: return "bcollide"; break;
-        case 42: return "boarders2"; break;
-        case 43: return "eyefish"; break;
-        case 44: return "disc"; break;
-        case 45: return "cot"; break;
-        case 46: return "julia"; break;
-        case 47: return "spiral"; break;
-        case 48: return "tangent"; break;
-        case 49: return "rings"; break;
-        case 50: return "split"; break;
-    default : return "undefined";
-    }
-    return "";
-}
-
 void ofApp::axisChanged(ofxGamepadAxisEvent& e)
 {
 	//cout << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
@@ -1055,6 +731,75 @@ void ofApp::buttonReleased(ofxGamepadButtonEvent& e)
 	//cout << "BUTTON " << e.button << " RELEASED" << endl;
 }
 
+// save list of functions in text file
+void ofApp::saveLog(std::string s)
+{
+    std::string filename = "images/functions_" + s + ".txt";
+
+    myFunctionsTextFile.open(filename,ofFile::WriteOnly);
+
+    int length = curNumberOfSuccessiveVariations;
+
+    myFunctionsTextFile << " -> ";
+
+    if(operationsMode==0)
+    {
+        for(int i=0;i<length;i++)
+        {
+            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+        }
+    }
+    else if(operationsMode==1)
+    {
+        for(int i=0;i<length-2;i++)
+        {
+            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+        }
+        if(length>1)
+        {
+            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
+        }
+        else
+        {
+            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
+        }
+    }
+    else if(operationsMode==2)
+    {
+        for(int i=0;i<length-3;i++)
+        {
+            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+        }
+        if(length>2)
+        {
+            myFunctionsTextFile << (getName(variationsParameters[length-3].foldType) + " + " + getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
+        }
+        else if(length>1)
+        {
+            myFunctionsTextFile << (getName(variationsParameters[length-2].foldType) + " + " + getName(variationsParameters[length-1].foldType)) << " -> ";
+        }
+        else
+        {
+            myFunctionsTextFile << getName(variationsParameters[length-1].foldType) << " -> ";
+        }
+    }
+    else if(operationsMode==3)
+    {
+        for(int i=0;i<length;i++)
+        {
+            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+        }
+        for(int i=0;i<length;i++)
+        {
+            myFunctionsTextFile << getName(variationsParameters[i].foldType) << " -> ";
+        }
+    }
+
+    myFunctionsTextFile.close();
+
+    std::cout << "Saved functions." << std::endl;
+}
+
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
 
@@ -1103,6 +848,200 @@ void ofApp::gotMessage(ofMessage msg) {
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
+}
+
+// show info on screen
+void ofApp::showState()
+{
+
+    float u = 50.0/30.0*1080/CANVAS_HEIGHT;
+
+    float dx = CANVAS_HEIGHT+35*u;
+    float dy = 150*u;
+
+    float infoParameter = ofMap(curL2,-0.8,0.85,0,1,true);
+
+    ofPushMatrix();
+
+    ofTranslate(dx,dy);
+
+    float yTranslation = 90*40.0/30.0*1080/CANVAS_HEIGHT;
+
+    int frameNum = ofGetFrameNum();
+
+    ofPushMatrix();
+
+    ofTranslate(1100*pow(infoParameter,2.8)*u,0);
+
+    for(int i=0;i<curNumberOfSuccessiveVariations;i++)
+    {
+        ofPushMatrix();
+
+        int reversedIndex = (curNumberOfSuccessiveVariations - i - 1);
+
+        float col = (colorMode!=0 && colorMode!=3 ? 255 : 0);
+
+        ofTranslate(0,yTranslation*reversedIndex);
+
+        std::string cursor = (indexOfChanges==i ? "  <" : "");
+
+        std::string functionString = std::to_string(reversedIndex+1) + " : " + getName(variationsParameters[i].foldType) + cursor;
+
+        if(indexOfChanges==i)
+        {
+            float strLength = functionString.size();
+
+
+            ofPushMatrix();
+            ofSetColor(col);
+            ofTranslate(-10*u,-28*u);
+            ofDrawRectangle(0,0,20*u+myFont.stringWidth(functionString),37*u);
+            ofPopMatrix();
+
+            ofSetColor(255-col);
+            ofPushMatrix();
+            //ofScale(1+0.075*(0.5+0.5*cos(0.5*frameNum))*15/strLength,1);
+            myFont.drawString(functionString,0,0);
+            ofPopMatrix();
+        }
+        else
+        {
+            ofSetColor(col);
+            myFont.drawString(functionString,0,0);
+        }
+
+        if(i>0 && (threeD==0||(reversedIndex!=curNumberOfSuccessiveVariations/2-1)))
+        {
+            float troffset = 7*cos(TWO_PI*ofClamp(2.3*fmod(123+0.027*frameNum - 0.15*i,2.3),0,1));
+
+            ofPushMatrix();
+            ofTranslate(1,35 + troffset);
+            ofScale(1,0.6);
+            ofSetColor(col);
+            myFont.drawString("^",0,0);
+            ofTranslate(5.5,15);
+            myFont.drawString("|",0,0);
+            ofPopMatrix();
+        }
+
+        ofPopMatrix();
+    }
+
+    ofPopMatrix();
+
+    ofTranslate(0,0);
+
+    ofScale(0.8);
+
+    float infoAlpha = 255*pow(infoParameter,2.5);
+
+    float alpha0 = 255-infoAlpha;
+
+    float col = (colorMode!=0 && colorMode!=3 ? 255 : 0);
+
+    if(numberOfGamepads>0)
+    {
+        ofPushMatrix();
+        ofTranslate(500*u,-50-300*u*infoParameter);
+        ofSetColor(col,alpha0*0.75);
+        ofScale(0.9);
+        myFont.drawString("L2 to show info and controls",0,0);
+        ofPopMatrix();
+    }
+
+    if(numberOfGamepads>0 && infoParameter>0.0001)
+    {
+        ofPushMatrix();
+
+        float einfoP = 1-pow(1-infoParameter,2.5);
+
+        ofTranslate(0,100*u*(1-einfoP));
+
+        yTranslation *= 0.8;
+
+        std::string howItWorksString = "HOW IT WORKS :";
+        ofPushMatrix();
+        ofSetColor(col,infoAlpha);
+        ofTranslate(-10*u,-30*u);
+        ofDrawRectangle(0,0,20*u+myFont.stringWidth(howItWorksString),38*u);
+        ofPopMatrix();
+        ofSetColor(255-col,infoAlpha);
+        myFont.drawString(howItWorksString,0,0);
+        ofSetColor(col,infoAlpha);
+
+        ofTranslate(0,yTranslation);
+        myFont.drawString("Particles initially filling a square go through several",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("functions by composition (following the arrows).",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("Most of those functions have random parameters.",0,0);
+        ofTranslate(0,yTranslation);
+        ofTranslate(0,yTranslation);
+
+        std::string controlsString = "CONTROLS :";
+        ofPushMatrix();
+        ofSetColor(col,infoAlpha);
+        ofTranslate(-10*u,-30*u);
+        ofDrawRectangle(0,0,20*u+myFont.stringWidth(controlsString),38*u);
+        ofPopMatrix();
+        ofSetColor(255-col,infoAlpha);
+        myFont.drawString(controlsString,0,0);
+        ofSetColor(col,infoAlpha);
+
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : select and change functions",0,0);
+        myFontBold.drawString("Pad",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : random new set of functions",0,0);
+        myFontBold.drawString("A",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : randomize parameters of all functions",0,0);
+        myFontBold.drawString("B",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : randomize parameters of pointed function",0,0);
+        myFontBold.drawString("X",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : in 2D, keep particles in screen or not",0,0);
+        myFontBold.drawString("Y",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : in 3D, change 3D projection",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : add/remove function",0,0);
+        myFontBold.drawString("L1/R1",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : scale/rotation on function",0,0);
+        myFontBold.drawString("Left joystick",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : translation on function (view rotation in 3D)",0,0);
+        myFontBold.drawString("Right joystick",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : 2D/3D modes",0,0);
+        myFontBold.drawString("Middle left",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                         : color modes",0,0);
+        myFontBold.drawString("Middle right",0,0);
+        ofTranslate(0,yTranslation);
+        ofTranslate(0,yTranslation);
+
+        std::string aboutString = "ABOUT :";
+        ofPushMatrix();
+        ofSetColor(col,infoAlpha);
+        ofTranslate(-10*u,-30*u);
+        ofDrawRectangle(0,0,20*u+myFont.stringWidth(aboutString),38*u);
+        ofPopMatrix();
+        ofSetColor(255-col,infoAlpha);
+        myFont.drawString(aboutString,0,0);
+        ofSetColor(col,infoAlpha);
+
+        ofTranslate(0,yTranslation);
+        myFont.drawString("By Etienne Jacob",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("Inspired by work from GenerateMe (Twitter: @generateme_blog)",0,0);
+
+        ofPopMatrix();
+    }
+
+    ofPopMatrix();
 }
 
 // long boring code at the end :)
@@ -1315,4 +1254,64 @@ void ofApp::changeVariationParameters(int i)
 
     variationsParameters[i].radialblur_spinvar = sin(variationsParameters[i].radialblur_angle);
     variationsParameters[i].radialblur_zoomvar = cos(variationsParameters[i].radialblur_angle);
+}
+
+// names of primitive variations
+std::string ofApp::getName(int ind)
+{
+    switch(ind){
+        case 0: return "lines"; break;
+        case 1: return "twintrian"; break;
+        case 2: return "julian"; break;
+        case 3: return "juliascope"; break;
+        case 4: return "rectangles"; break;
+        case 5: return "sinusoidal"; break;
+        case 6: return "scry"; break;
+        case 7: return "fan2"; break;
+        case 8: return "pdj"; break;
+        case 9: return "butterfly"; break;
+        case 10: return "wedgejulia"; break;
+        case 11: return "rotate"; break;
+        case 12: return "cross"; break;
+        case 13: return "curl"; break;
+        case 14: return "rings2"; break;
+        case 15: return "heart"; break;
+        case 16: return "ex"; break;
+        case 17: return "popcorn"; break;
+        case 18: return "waves"; break;
+        case 19: return "horseshoe"; break;
+        case 20: return "polar"; break;
+        case 21: return "ennepers"; break;
+        case 22: return "cell"; break;
+        case 23: return "boarders"; break;
+        case 24: return "supershape"; break;
+        case 25: return "loonie"; break;
+        case 26: return "foci"; break;
+        case 27: return "blade"; break;
+        case 28: return "ngon"; break;
+        case 29: return "diamond"; break;
+        case 30: return "oscilloscope"; break;
+        case 31: return "oscilloscope2"; break;
+        case 32: return "blocky"; break;
+        case 33: return "waves2"; break;
+        case 34: return "blob"; break;
+        case 35: return "bsplit"; break;
+        case 36: return "bswirl"; break;
+        case 37: return "bwraps7"; break;
+        case 38: return "exponential"; break;
+        case 39: return "blurzoom"; break;
+        case 40: return "bmod"; break;
+        case 41: return "bcollide"; break;
+        case 42: return "boarders2"; break;
+        case 43: return "eyefish"; break;
+        case 44: return "disc"; break;
+        case 45: return "cot"; break;
+        case 46: return "julia"; break;
+        case 47: return "spiral"; break;
+        case 48: return "tangent"; break;
+        case 49: return "rings"; break;
+        case 50: return "split"; break;
+    default : return "undefined";
+    }
+    return "";
 }

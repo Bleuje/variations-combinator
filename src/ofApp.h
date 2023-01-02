@@ -24,7 +24,6 @@ public:
 
     std::vector<uint32_t> pixelCount;
     ofBufferObject pixelCountBuffer;
-
     ofShader finalColorShader, pixelCountValueSetterShader, countIncrementerShader;
 
     ofFbo displayedImage, debugImage;
@@ -35,12 +34,10 @@ public:
     int MAX_FPS = 60;
     float time;
 
-    double weightCount[MAX_NUMBER_OF_VARIATIONS];
+    int numberOfVariationTypes = 51; // warning : to update if necessary
 
-    int chosenProjectionDivisor = 0;
-
-    int numberOfVariationTypes = 51;
-
+    bool renderNewOne = true;
+    bool doPrintState = true;
     int curNumberOfSuccessiveVariations = 6;
     int contrastCount = -8;
     int doSinusoid = 1;
@@ -73,6 +70,9 @@ public:
     double curR2 = -1;
     float latest3DJSMoveTime = -1111;
     float translationStep = 0.02;
+    int chosenProjectionDivisor = 0;
+    double weightCount[MAX_NUMBER_OF_VARIATIONS];
+    int numberOfGamepads = 0;
 
     void setNewParameters();
     void printState();
@@ -80,16 +80,7 @@ public:
     std::string getName(int ind);
     void changeVariationParameters(int i);
     void updateWeight(int i);
-
-    int numberOfGamepads = 0;
-
-    ofFile myFunctionsTextFile;
     void saveLog(std::string s);
-
-    bool renderNewOne = true;
-
-    ofTrueTypeFont myFont;
-    ofTrueTypeFont myFontBold;
 
     // gamepad actions
     void actionNewParameters();
@@ -108,9 +99,8 @@ public:
     void actionResetRotations();
     void actionChangeProjection();
 
-    bool doPrintState = true;
+    void keyPressed(int key); // keyboard shorcuts here
 
-    void keyPressed(int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y);
     void mouseDragged(int x, int y, int button);
@@ -122,9 +112,13 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+    // gamepad events
     void axisChanged(ofxGamepadAxisEvent &e);
     void buttonPressed(ofxGamepadButtonEvent &e);
     void buttonReleased(ofxGamepadButtonEvent &e);
+
+    ofFile myFunctionsTextFile;
+    ofTrueTypeFont myFont, myFontBold;
 
     struct RandomParameters{
         int foldType;
