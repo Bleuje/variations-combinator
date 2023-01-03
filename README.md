@@ -99,7 +99,7 @@ GNU General Public License v3.0
 
 Feel free to contribute or share your results.
 
-Thank you generateme for the inspiration.
+Thanks to GenerateMe for the inspiration and work used here.
 
 Possible future work :
 
