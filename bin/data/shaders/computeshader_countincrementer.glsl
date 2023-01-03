@@ -955,7 +955,7 @@ vec2 rotate(vec2 v, float a) {
 	return m * v;
 }
 
-vec2 applyVaration(vec2 p,int type,int index)
+vec2 applyVariation(vec2 p,int type,int index)
 {
 	vec2 result;
 	switch (type) {
@@ -1146,7 +1146,7 @@ void main(){
 		{
 			for(int i=0;i<sequenceLength;i++)
 			{
-				curPos = applyVaration(curPos, params[i].variationType, i);
+				curPos = applyVariation(curPos, params[i].variationType, i);
 			}
 		}
 		else if(operationsMode==1)
@@ -1154,16 +1154,16 @@ void main(){
 			
 			for(int i=0;i<sequenceLength-2;i++)
 			{
-				curPos = applyVaration(curPos, params[i].variationType, i);
+				curPos = applyVariation(curPos, params[i].variationType, i);
 			}
 			if(sequenceLength>1)
 			{
-				curPos = applyVaration(curPos, params[sequenceLength-2].variationType, sequenceLength-2)+applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVariation(curPos, params[sequenceLength-2].variationType, sequenceLength-2)+applyVariation(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 				curPos /= 1.8;
 			}
 			else
 			{
-				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVariation(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 		}
 		else if(operationsMode==2)
@@ -1171,29 +1171,29 @@ void main(){
 
 			for(int i=0;i<sequenceLength-3;i++)
 			{
-				curPos = applyVaration(curPos, params[i].variationType, i);
+				curPos = applyVariation(curPos, params[i].variationType, i);
 			}
 			if(sequenceLength>2)
 			{
-				curPos = applyVaration(curPos, params[sequenceLength-3].variationType, sequenceLength-2)+applyVaration(curPos, params[sequenceLength-2].variationType, sequenceLength-2);
+				curPos = applyVariation(curPos, params[sequenceLength-3].variationType, sequenceLength-2)+applyVariation(curPos, params[sequenceLength-2].variationType, sequenceLength-2);
 				curPos /= 1.8;
-				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVariation(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 			else if(sequenceLength>1)
 			{
-				curPos = applyVaration(curPos, params[sequenceLength-2].variationType, sequenceLength-1);
-				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVariation(curPos, params[sequenceLength-2].variationType, sequenceLength-1);
+				curPos = applyVariation(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 			else
 			{
-				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVariation(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 		}
 		else if(operationsMode==3)
 		{
 			for(int i=0;i<sequenceLength;i++)
 			{
-				curPos = applyVaration(curPos, params[i].variationType, i);
+				curPos = applyVariation(curPos, params[i].variationType, i);
 				float a = floor(5.*prand(inputPos))/4.;
 				float sf = 0.8+0.4*a;
 				if(i<sequenceLength-1) curPos *= sf;
@@ -1225,11 +1225,11 @@ void main(){
 		vec2 curPos2 = curPos;
 		for(int i=0;i<sequenceLength/2;i++)
 		{
-			curPos1 = applyVaration(curPos1, params[i].variationType, i);
+			curPos1 = applyVariation(curPos1, params[i].variationType, i);
 		}
 		for(int i=sequenceLength/2;i<sequenceLength;i++)
 		{
-			curPos2 = applyVaration(curPos2, params[i].variationType, i);
+			curPos2 = applyVariation(curPos2, params[i].variationType, i);
 		}
 
 		float xx,yy,zz,tt;
