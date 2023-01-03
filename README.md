@@ -34,7 +34,7 @@ This tool is real-time thanks to [compute shaders](https://github.com/Bleuje/var
 
 You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. Most of them are not in previous link, a more exhaustive list with their Java implementation can be found here : [JWildFire source code](https://github.com/thargor6/JWildfire/tree/master/src/org/jwildfire/create/tina/variation). The ones used in this project  have been translated from Java into glsl  (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl) for source code).
 
-GenerateMe made the parameters intialization work for the variations (important work).
+GenerateMe made the parameters randomization ranges/laws work for the variations (important work).
 
 ## 3D algorithm
 
