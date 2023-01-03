@@ -294,7 +294,7 @@ void ofApp::actionResetTranslations()
     doPrintState = false;
 }
 
-// reset translations
+// reset scales/weights
 void ofApp::actionResetScales()
 {
     for(int i=0;i<curNumberOfSuccessiveVariations;i++)
@@ -307,7 +307,7 @@ void ofApp::actionResetScales()
     doPrintState = false;
 }
 
-// reset translations
+// reset rotations
 void ofApp::actionResetRotations()
 {
     for(int i=0;i<curNumberOfSuccessiveVariations;i++)
@@ -319,7 +319,7 @@ void ofApp::actionResetRotations()
     doPrintState = false;
 }
 
-// reset translations
+// reset scale/weight
 void ofApp::actionResetScale(int i)
 {
     weightCount[i] = 0;
@@ -329,6 +329,7 @@ void ofApp::actionResetScale(int i)
     doPrintState = false;
 }
 
+// change stereographic projection for 3D mode
 void ofApp::actionChangeProjection()
 {
     chosenProjectionDivisor = (chosenProjectionDivisor + 1)%4;
@@ -550,7 +551,7 @@ void ofApp::keyPressed(int key) {
         radiusCount++;
         doPrintState = false;
     }
-    if(key=='&')
+    if(key=='&') // functionality to save a perfectly looping gif's frames, using circular translation at cursor, seems to be removed in this version
     {
         renderAnimation = true;
     }
