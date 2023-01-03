@@ -256,6 +256,13 @@ float length2(vec2 p)
 
 float eps = 0.00001;
 
+/////////////////////////////////////////////////////////////////////
+// list of variations implementations is in code below
+// got them through GenerateMe
+// seems to kind be previously from here : https://github.com/thargor6/JWildfire/tree/master/src/org/jwildfire/create/tina/variation
+// translated by me (Etienne Jacob) into glsl
+
+
 vec2 lines(vec2 p, float weight, int index) {
 	float r;
 	if(params[index].lines_squared) r=0.5f*sq(gaussian_rand(13.*p+vec2(1.4,3.211)+vec2(555.555*p.y)));
@@ -935,8 +942,10 @@ vec2 split(vec2 p, float weight, int index) {
      else
       x = -weight * p.x;
     return vec2(x,y);  
-  } 
-//////////////////////////////////
+  }
+
+// end of variations glsl implementations
+//////////////////////////////////////////
 
 
 vec2 rotate(vec2 v, float a) {
@@ -946,7 +955,7 @@ vec2 rotate(vec2 v, float a) {
 	return m * v;
 }
 
-vec2 applyFold(vec2 p,int type,int index)
+vec2 applyVaration(vec2 p,int type,int index)
 {
 	vec2 result;
 	switch (type) {
@@ -1137,7 +1146,7 @@ void main(){
 		{
 			for(int i=0;i<sequenceLength;i++)
 			{
-				curPos = applyFold(curPos, params[i].variationType, i);
+				curPos = applyVaration(curPos, params[i].variationType, i);
 			}
 		}
 		else if(operationsMode==1)
@@ -1145,16 +1154,16 @@ void main(){
 			
 			for(int i=0;i<sequenceLength-2;i++)
 			{
-				curPos = applyFold(curPos, params[i].variationType, i);
+				curPos = applyVaration(curPos, params[i].variationType, i);
 			}
 			if(sequenceLength>1)
 			{
-				curPos = applyFold(curPos, params[sequenceLength-2].variationType, sequenceLength-2)+applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVaration(curPos, params[sequenceLength-2].variationType, sequenceLength-2)+applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 				curPos /= 1.8;
 			}
 			else
 			{
-				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 		}
 		else if(operationsMode==2)
@@ -1162,29 +1171,29 @@ void main(){
 
 			for(int i=0;i<sequenceLength-3;i++)
 			{
-				curPos = applyFold(curPos, params[i].variationType, i);
+				curPos = applyVaration(curPos, params[i].variationType, i);
 			}
 			if(sequenceLength>2)
 			{
-				curPos = applyFold(curPos, params[sequenceLength-3].variationType, sequenceLength-2)+applyFold(curPos, params[sequenceLength-2].variationType, sequenceLength-2);
+				curPos = applyVaration(curPos, params[sequenceLength-3].variationType, sequenceLength-2)+applyVaration(curPos, params[sequenceLength-2].variationType, sequenceLength-2);
 				curPos /= 1.8;
-				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 			else if(sequenceLength>1)
 			{
-				curPos = applyFold(curPos, params[sequenceLength-2].variationType, sequenceLength-1);
-				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVaration(curPos, params[sequenceLength-2].variationType, sequenceLength-1);
+				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 			else
 			{
-				curPos = applyFold(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
+				curPos = applyVaration(curPos, params[sequenceLength-1].variationType, sequenceLength-1);
 			}
 		}
 		else if(operationsMode==3)
 		{
 			for(int i=0;i<sequenceLength;i++)
 			{
-				curPos = applyFold(curPos, params[i].variationType, i);
+				curPos = applyVaration(curPos, params[i].variationType, i);
 				float a = floor(5.*prand(inputPos))/4.;
 				float sf = 0.8+0.4*a;
 				if(i<sequenceLength-1) curPos *= sf;
@@ -1216,11 +1225,11 @@ void main(){
 		vec2 curPos2 = curPos;
 		for(int i=0;i<sequenceLength/2;i++)
 		{
-			curPos1 = applyFold(curPos1, params[i].variationType, i);
+			curPos1 = applyVaration(curPos1, params[i].variationType, i);
 		}
 		for(int i=sequenceLength/2;i<sequenceLength;i++)
 		{
-			curPos2 = applyFold(curPos2, params[i].variationType, i);
+			curPos2 = applyVaration(curPos2, params[i].variationType, i);
 		}
 
 		float xx,yy,zz,tt;

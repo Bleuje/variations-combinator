@@ -1045,7 +1045,7 @@ void ofApp::showState()
     ofPopMatrix();
 }
 
-// long boring code at the end :)
+// this important parameters randomization work comes from GenerateMe (aka tsulej)
 // change parameters of variation i
 void ofApp::changeVariationParameters(int i)
 {

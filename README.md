@@ -20,19 +20,21 @@ Note : functionality to save pictures does not seem to work with the executable 
 
 ## Building with openFrameworks
 
-[ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (I think you should use my fork because of a fix).
+[ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (it seems that you should use this fork because of a fix).
 
 Latest version is tested only on linux so far, but many people have tested it previously on windows before the gamepad functionality was added.
 
 ## Main algorithm
 
-The main algorithm composes a list of functions called *variations* (which I often just call functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are found in fractal flames algorithms. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/) (see early posts (2016) in its [Archive](https://folds2d.tumblr.com/archive)).
+The main algorithm composes a list of functions called *variations* (which are often just called functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are found in fractal flames algorithms. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/) (see early posts (2016) in its [Archive](https://folds2d.tumblr.com/archive)).
 
 He made a tutorial to explain the algorithm, using Processing : [Folds](https://generateme.wordpress.com/2016/04/11/folds/)
 
 This tool is real-time thanks to [compute shaders](https://github.com/Bleuje/variations-combinator/tree/main/bin/data/shaders).
 
-You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. I translated some of them (most of them are not in previous link) from Java into glsl (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl) for source code).
+You can visualize some examples of [variations here](https://www.jwfsanctuary.club/variation-information/variation-guide/) to get an idea. Most of them are not in previous link, a more exhaustive list with their Java implementation can be found here : [JWildFire source code](https://github.com/thargor6/JWildfire/tree/master/src/org/jwildfire/create/tina/variation). The ones used in this project  have been translated from Java into glsl  (see [main shader](https://github.com/Bleuje/variations-combinator/blob/main/bin/data/shaders/computeshader_countincrementer.glsl) for source code).
+
+GenerateMe made the parameters intialization work for the variations (important work).
 
 ## 3D algorithm
 
@@ -83,7 +85,11 @@ There are some more, see `void ofApp::keyPressed(int key)` in source code (ofApp
 
 ## Tricks to get good pictures
 
-Getting interesting results is not really easy the more you become used to the tool. I think that the normal way to explore is to build the main shape from the first functions of the list and gradually work towards texture with the following functions (I mean that the first function of the list is the last function to be applied, and it's the one at the top of the screen). You can also often keep a same function but randomize its parameters. Some variations have very strong character so they become quickly boring as main shape and are better used at an intermediate or texture level.
+Getting interesting results is not really easy the more you become used to the tool.
+
+A normal way to explore seems to be building the main shape from the first functions of the list and gradually work towards texture with the following functions (the first function of the list being the last function to be applied, and it's the one at the top of the screen). You can also often keep a same function but randomize its parameters. Maybe try to randomize everything a lot of times before seeing a good starting point.
+
+Some variations have very strong character so they become quickly boring as main shape and are better used at an intermediate or texture level.
 
 ## License
 
