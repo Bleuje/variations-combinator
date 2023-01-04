@@ -26,7 +26,7 @@ Latest version is tested only on linux so far, but many people have tested it pr
 
 ## Main algorithm
 
-The main algorithm composes a list of functions called *variations* (which are often just called functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are found in fractal flames algorithms. Most of them have parameters that can be randomized. This is inspired by work from [Genrateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/) (see early posts (2016) in its [Archive](https://folds2d.tumblr.com/archive)).
+The main algorithm composes a list of functions called *variations* (which are often just called functions here). They take a 2D position as input and return another 2D position (hence they can be composed). By plotting the images of particles filling a 2D square with transparent dots, subtle images can be obtained. The variations used here are found in fractal flames algorithms. Most of them have parameters that can be randomized. This is inspired by work from [Generateme](https://github.com/genmeblog) aka [tsulej](https://github.com/tsulej) who has also shown his outputs in a tumblr blog : [https://folds2d.tumblr.com/](https://folds2d.tumblr.com/) (see early posts (2016) in its [Archive](https://folds2d.tumblr.com/archive)).
 
 He made a tutorial to explain the algorithm, using Processing : [Folds](https://generateme.wordpress.com/2016/04/11/folds/)
 
