@@ -236,6 +236,6 @@ public:
         float radialblur_spinvar, radialblur_zoomvar;
     };
 
-    vector<RandomParameters> variationsParameters;
+    std::vector<RandomParameters> variationsParameters;
     ofBufferObject variationsParametersBuffer;
 };
