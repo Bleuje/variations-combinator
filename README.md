@@ -12,17 +12,23 @@ Screenshot of the tool :
 
 ![tool screenshot](doc/sceenshot-example.png)
 
+## Building with openFrameworks from source
+
+### Version without gamepad
+
+It should compile easily on windows and linux using this branch : https://github.com/Bleuje/variations-combinator/tree/nogamepad
+
+### Version with gamepad
+
+Using the main branch. [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (it seems that you should use this fork because of a fix).
+
+Only tested only on linux so far and it might compile less easily.
+
 ## Linux executable
 
-[**Downloadable on itch.io**](https://bleuje.itch.io/variations-combinator)
+An attempt to have it run directly on linux : [**Downloadable on itch.io**](https://bleuje.itch.io/variations-combinator)
 
-Note : functionality to save pictures does not seem to work with the executable yet.
-
-## Building with openFrameworks
-
-[ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (it seems that you should use this fork because of a fix).
-
-Latest version is tested only on linux so far, but many people have tested it previously on windows before the gamepad functionality was added.
+Note : functionality to save pictures does not seem to work with this executable yet.
 
 ## Main algorithm
 
@@ -102,8 +108,5 @@ Feel free to contribute or share your results.
 Thanks to GenerateMe for the inspiration and work used here.
 
 Possible future work :
-
-- release more executables
-- branch without gamepad code
-- youtube demo video should come when I'll have my gamepad available
-- improve code quality
+- windows executable
+- youtube demo video
