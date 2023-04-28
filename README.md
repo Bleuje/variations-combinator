@@ -55,8 +55,8 @@ But it's also controllable with keyboard with more actions, but not in a friendl
 | Key | Description |
 | ----------- | ----------- |
 | **Escape** | **quit** the app |
-| **W** and **X** | function selection navigation / change cursor position |
-| **C** and **V** | change function at cursor |
+| arrows **up** / **down** (or **W** / **X**)   | function selection navigation / change cursor position |
+| arrows **left** / **right** (or **C** / **V**)  | change function at cursor |
 | **S** | **save** picture (with timestamp in filename), also saves the list of functions in a text file. Both in "data/images" folder | 
 | **Q** | randomize parameters of function at cursor (not possible for all variations) |
 | **Y** | randomize parameters of all functions |

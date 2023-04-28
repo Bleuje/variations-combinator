@@ -430,11 +430,11 @@ void ofApp::keyPressed(int key) {
     {
         actionRemoveFunctionAtCursor();
     }
-    if(key=='w') // change the cursor position to control single folds
+    if(key=='w' || key==OF_KEY_DOWN) // change the cursor position to control single folds
     {
         actionMoveCursor(-1);
     }
-    if(key=='x') // change the cursor position to control single folds
+    if(key=='x' || key==OF_KEY_UP) // change the cursor position to control single folds
     {
         actionMoveCursor(+1);
     }
@@ -442,11 +442,11 @@ void ofApp::keyPressed(int key) {
     {
         actionRandomizeParametersOfSingleVariation();
     }
-    if(key=='c') // change fold type on cursor
+    if(key=='c' || key==OF_KEY_LEFT) // change fold type on cursor
     {
         actionChangeFunctionAtCursor(-1);
     }
-    if(key=='v') // change fold type on cursor
+    if(key=='v' || key==OF_KEY_RIGHT) // change fold type on cursor
     {
         actionChangeFunctionAtCursor(+1);
     }
