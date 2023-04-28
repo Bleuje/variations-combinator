@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGamepadHandler.h"
 #include "utils.h"
 #include <random>
 #include <iomanip>
@@ -111,11 +110,6 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-
-    // gamepad events
-    void axisChanged(ofxGamepadAxisEvent &e);
-    void buttonPressed(ofxGamepadButtonEvent &e);
-    void buttonReleased(ofxGamepadButtonEvent &e);
 
     ofFile myFunctionsTextFile;
     ofTrueTypeFont myFont, myFontBold;
