@@ -16,7 +16,7 @@ Screenshot of the tool :
 
 ### Version without gamepad
 
-It should compile easily on windows and linux using this branch : https://github.com/Bleuje/variations-combinator/tree/nogamepad
+It should compile easily on windows and linux using the branch `nogamepad` : https://github.com/Bleuje/variations-combinator/tree/nogamepad
 
 ### Version with gamepad
 
