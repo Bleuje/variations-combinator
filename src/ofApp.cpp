@@ -23,6 +23,7 @@ void ofApp::setup() {
 
     variationsParameters.resize(MAX_NUMBER_OF_VARIATIONS);
     for(int i=0;i<MAX_NUMBER_OF_VARIATIONS;i++) weightCount[i] = 0;
+    for(int i=0;i<MAX_NUMBER_OF_VARIATIONS;i++) randomizationSignal[i] = 0;
     setNewParameters();
     variationsParametersBuffer.allocate(variationsParameters,GL_DYNAMIC_DRAW);
     variationsParametersBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 4);
@@ -888,11 +889,15 @@ void ofApp::showState()
 
         std::string functionString = std::to_string(reversedIndex+1) + " : " + getName(variationsParameters[i].variationType) + cursor;
 
+        float change0 = ofClamp(4.3*(time-randomizationSignal[i]),0,1);
+
+        ofPushMatrix();
+        ofTranslate(18.0*sin(PI*change0),0);
+
         if(indexOfChanges==i)
         {
             float strLength = functionString.size();
-
-
+            
             ofPushMatrix();
             ofSetColor(col);
             ofTranslate(-10*u,-28*u);
@@ -910,6 +915,8 @@ void ofApp::showState()
             ofSetColor(col);
             myFont.drawString(functionString,0,0);
         }
+
+        ofPopMatrix();
 
         if(i>0 && (threeD==0||(reversedIndex!=curNumberOfSuccessiveVariations/2-1)))
         {
@@ -1054,6 +1061,7 @@ void ofApp::showState()
 void ofApp::changeVariationParameters(int i)
 {
     actionResetScale(i);
+    randomizationSignal[i] = time;
 
     variationsParameters[i].tx = 0;
     variationsParameters[i].ty = 0;

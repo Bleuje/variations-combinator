@@ -72,6 +72,7 @@ public:
     float translationStep = 0.02;
     int chosenProjectionDivisor = 0;
     double weightCount[MAX_NUMBER_OF_VARIATIONS];
+    double randomizationSignal[MAX_NUMBER_OF_VARIATIONS];
     int numberOfGamepads = 0;
 
     void setNewParameters();
