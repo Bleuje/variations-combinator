@@ -971,11 +971,11 @@ void ofApp::showState()
         ofSetColor(col,infoAlpha);
 
         ofTranslate(0,yTranslation);
-        myFont.drawString("Particles initially filling a square go through several",0,0);
+        myFont.drawString("A square of particles goes through a sequence",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("functions by composition (following the arrows).",0,0);
+        myFont.drawString("of transformations/functions (following the arrows).",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("Most of those functions have random parameters.",0,0);
+        myFont.drawString("Most of the functions have random parameters.",0,0);
         ofTranslate(0,yTranslation);
         ofTranslate(0,yTranslation);
 
@@ -999,7 +999,7 @@ void ofApp::showState()
         myFont.drawString("                         : randomize parameters of all functions",0,0);
         myFontBold.drawString("B",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : randomize parameters of pointed function",0,0);
+        myFont.drawString("                         : randomize parameters of selected function",0,0);
         myFontBold.drawString("X",0,0);
         ofTranslate(0,yTranslation);
         myFont.drawString("                         : in 2D, keep particles in screen or not",0,0);
@@ -1010,17 +1010,21 @@ void ofApp::showState()
         myFont.drawString("                         : add/remove function",0,0);
         myFontBold.drawString("L1/R1",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : scale/rotation on function",0,0);
+        myFont.drawString("                         : translation on function",0,0);
         myFontBold.drawString("Left joystick",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : translation on function (view rotation in 3D)",0,0);
+        myFont.drawString("                         : scale/rotation on function (view rotation in 3D)",0,0);
         myFontBold.drawString("Right joystick",0,0);
-        ofTranslate(0,yTranslation);
-        myFont.drawString("                         : 2D/3D modes",0,0);
-        myFontBold.drawString("Middle left",0,0);
         ofTranslate(0,yTranslation);
         myFont.drawString("                         : color modes",0,0);
         myFontBold.drawString("Middle right",0,0);
+        ofTranslate(0,yTranslation);
+        ofPushMatrix();
+        ofScale(1.22);
+        ofTranslate(0,3);
+        myFont.drawString("                     : 2D/3D modes",0,0);
+        myFontBold.drawString("Middle left",0,0);
+        ofPopMatrix();
         ofTranslate(0,yTranslation);
         ofTranslate(0,yTranslation);
 
@@ -1035,7 +1039,7 @@ void ofApp::showState()
         ofSetColor(col,infoAlpha);
 
         ofTranslate(0,yTranslation);
-        myFont.drawString("By Etienne Jacob",0,0);
+        myFont.drawString("By Etienne Jacob (bleuje)",0,0);
         ofTranslate(0,yTranslation);
         myFont.drawString("Inspired by work from GenerateMe (Twitter: @generateme_blog)",0,0);
 
