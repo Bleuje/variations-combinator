@@ -917,7 +917,9 @@ void ofApp::showState()
             myFont.drawString(functionString,0,0);
         }
 
-        ofTranslate(18.0*sin(PI*change1),0);
+        ofPopMatrix();
+
+        ofTranslate(18.0*sin(PI*min(change0,change1)),0);
 
         if(i>0 && (threeD==0||(reversedIndex!=curNumberOfSuccessiveVariations/2-1)))
         {
@@ -932,8 +934,6 @@ void ofApp::showState()
             myFont.drawString("|",0,0);
             ofPopMatrix();
         }
-
-        ofPopMatrix();
 
         ofPopMatrix();
     }
