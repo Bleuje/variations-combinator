@@ -999,6 +999,10 @@ void ofApp::showState()
         ofTranslate(0,yTranslation);
         myFont.drawString("                         : select and change functions",0,0);
         myFontBold.drawString("Pad",0,0);
+
+        drawPad(127,-12,255-col,infoAlpha);
+        ofSetColor(col,infoAlpha);
+
         ofTranslate(0,yTranslation);
         myFont.drawString("                         : random new set of functions",0,0);
         myFontBold.drawString("A",0,0);
@@ -1053,6 +1057,30 @@ void ofApp::showState()
         ofPopMatrix();
     }
 
+    ofPopMatrix();
+}
+
+// draw pad with arrows when explaining controls
+void ofApp::drawPad(float x, float y, float col, float alpha)
+{
+    ofPushMatrix();
+    ofTranslate(x,y);
+    
+    for(int i=0;i<4;i++)
+    {
+        ofPushMatrix();
+        ofRotateRad(HALF_PI*i);
+        float rectangleHeight = 25;
+        ofSetColor(255-col,255*pow(alpha/255.0,2.0));
+        ofDrawRectangle(0,-rectangleHeight/2,30,rectangleHeight);
+        ofSetColor(col,255*pow(alpha/255.0,2.0));
+        ofBeginShape();
+        ofVertex(16,rectangleHeight/3);
+        ofVertex(25,0);
+        ofVertex(16,-rectangleHeight/3);
+        ofEndShape(true);
+        ofPopMatrix();
+    }
     ofPopMatrix();
 }
 

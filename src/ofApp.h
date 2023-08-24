@@ -82,6 +82,7 @@ public:
     void updateWeight(int i);
     void saveLog(std::string s);
     std::string getName(int ind);
+    void drawPad(float x, float y, float col, float alpha);
 
     // gamepad actions
     void actionNewParameters();
