@@ -890,6 +890,7 @@ void ofApp::showState()
         std::string functionString = std::to_string(reversedIndex+1) + " : " + getName(variationsParameters[i].variationType) + cursor;
 
         float change0 = ofClamp(4.3*(time-randomizationSignal[i]),0,1);
+        float change1 = ofClamp(4.3*(time-randomizationSignal[max(i-1,0)]),0,1);
 
         ofPushMatrix();
         ofTranslate(18.0*sin(PI*change0),0);
@@ -916,7 +917,7 @@ void ofApp::showState()
             myFont.drawString(functionString,0,0);
         }
 
-        ofPopMatrix();
+        ofTranslate(18.0*sin(PI*change1),0);
 
         if(i>0 && (threeD==0||(reversedIndex!=curNumberOfSuccessiveVariations/2-1)))
         {
@@ -931,6 +932,8 @@ void ofApp::showState()
             myFont.drawString("|",0,0);
             ofPopMatrix();
         }
+
+        ofPopMatrix();
 
         ofPopMatrix();
     }
