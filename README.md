@@ -12,6 +12,8 @@ Screenshot of the tool :
 
 ![tool screenshot](doc/sceenshot-example.png)
 
+[**demo video on Youtube here**](https://www.youtube.com/watch?v=uhF0tUzj6o8)
+
 ## Building with openFrameworks from source
 
 ### Version without gamepad
@@ -109,4 +111,3 @@ Thanks to GenerateMe for the inspiration and work used here.
 
 Possible future work :
 - windows executable
-- youtube demo video
