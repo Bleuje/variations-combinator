@@ -12,7 +12,7 @@ Screenshot of the tool :
 
 ![tool screenshot](doc/sceenshot-example.png)
 
-[**demo video on Youtube here**](https://www.youtube.com/watch?v=uhF0tUzj6o8)
+▶️ [**Demo video on YouTube**](https://www.youtube.com/watch?v=uhF0tUzj6o8) ✨
 
 ## Building with openFrameworks from source
 
@@ -111,3 +111,4 @@ Thanks to GenerateMe for the inspiration and work used here.
 
 Possible future work :
 - windows executable
+- split source code into more files
