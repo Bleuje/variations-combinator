@@ -75,7 +75,7 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    ofTranslate(120*ofGetWidth()/CANVAS_HEIGHT,0);
+    ofTranslate(70*ofGetWidth()/CANVAS_HEIGHT,0);
     ofScale(1.0*ofGetHeight()/CANVAS_HEIGHT);
 
     displayedImage.draw(0,0);
@@ -955,8 +955,8 @@ void ofApp::showState()
         ofPushMatrix();
         ofTranslate(500*u,-50-300*u*infoParameter);
         ofSetColor(col,alpha0*0.75);
-        ofScale(0.9);
-        myFont.drawString("L2 to show info and controls",0,0);
+        ofScale(1.0);
+        myFont.drawString("L2 pour infos et commandes",0,0);
         ofPopMatrix();
     }
 
@@ -970,7 +970,7 @@ void ofApp::showState()
 
         yTranslation *= 0.8;
 
-        std::string howItWorksString = "HOW IT WORKS :";
+        std::string howItWorksString = "FONCTIONNEMENT :";
         ofPushMatrix();
         ofSetColor(col,infoAlpha);
         ofTranslate(-10*u,-30*u);
@@ -981,15 +981,15 @@ void ofApp::showState()
         ofSetColor(col,infoAlpha);
 
         ofTranslate(0,yTranslation);
-        myFont.drawString("A square of particles goes through a sequence",0,0);
+        myFont.drawString("Un carré de particules suit une suite",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("of transformations/functions (following the arrows).",0,0);
+        myFont.drawString("de fonctions/transformations (dans le sens des flèches).",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("Most of the functions have random parameters.",0,0);
+        myFont.drawString("La plupart ont des paramètres aléatoires.",0,0);
         ofTranslate(0,yTranslation);
         ofTranslate(0,yTranslation);
 
-        std::string controlsString = "CONTROLS :";
+        std::string controlsString = "COMMANDES :";
         ofPushMatrix();
         ofSetColor(col,infoAlpha);
         ofTranslate(-10*u,-30*u);
@@ -1000,49 +1000,51 @@ void ofApp::showState()
         ofSetColor(col,infoAlpha);
 
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : select and change functions",0,0);
+        myFont.drawString("                               : sélection et changement de fonctions",0,0);
         myFontBold.drawString("Pad",0,0);
 
         drawPad(127,-12,255-col,infoAlpha);
         ofSetColor(col,infoAlpha);
 
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : random new set of functions",0,0);
+        myFont.drawString("                               : nouvel ensemble de fonctions",0,0);
         myFontBold.drawString("A",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : randomize parameters of all functions",0,0);
+        myFont.drawString("                               : randomiser les paramètres de toutes les fonctions",0,0);
         myFontBold.drawString("B",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : randomize parameters of selected function",0,0);
+        myFont.drawString("                               : randomiser les paramètres de la fonction",0,0);
         myFontBold.drawString("X",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : in 2D, keep particles in screen or not",0,0);
+        myFont.drawString("                               : en 2D, garder les particules dans l'écran ou pas",0,0);
         myFontBold.drawString("Y",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : in 3D, change 3D projection",0,0);
+        myFont.drawString("                               : en 3D, changer la projection 3D",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : add/remove function",0,0);
+        myFont.drawString("                               : ajout/suppression de fonction",0,0);
         myFontBold.drawString("L1/R1",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : translation on function",0,0);
-        myFontBold.drawString("Left joystick",0,0);
+        myFont.drawString("                               : translation de la fonction",0,0);
+        myFontBold.drawString("Joystick gauche",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : scale/rotation on function (view rotation in 3D)",0,0);
-        myFontBold.drawString("Right joystick",0,0);
+        myFont.drawString("                               : en 2D, échelle/rotation de la fonction",0,0);
+        myFontBold.drawString("Joystick droit",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("                         : color modes",0,0);
-        myFontBold.drawString("Middle right",0,0);
+        myFont.drawString("                               : en 3D, angle de vue 3D",0,0);
+        ofTranslate(0,yTranslation);
+        myFont.drawString("                               : modes de couleur",0,0);
+        myFontBold.drawString("Milieu droit",0,0);
         ofTranslate(0,yTranslation);
         ofPushMatrix();
         ofScale(1.22);
         ofTranslate(0,3);
-        myFont.drawString("                     : 2D/3D modes",0,0);
-        myFontBold.drawString("Middle left",0,0);
+        myFont.drawString("                           : modes 2D/3D",0,0);
+        myFontBold.drawString("Milieu gauche",0,0);
         ofPopMatrix();
         ofTranslate(0,yTranslation);
         ofTranslate(0,yTranslation);
 
-        std::string aboutString = "ABOUT :";
+        std::string aboutString = "A PROPOS :";
         ofPushMatrix();
         ofSetColor(col,infoAlpha);
         ofTranslate(-10*u,-30*u);
@@ -1053,9 +1055,9 @@ void ofApp::showState()
         ofSetColor(col,infoAlpha);
 
         ofTranslate(0,yTranslation);
-        myFont.drawString("By Etienne Jacob (bleuje)",0,0);
+        myFont.drawString("Par Etienne Jacob (bleuje)",0,0);
         ofTranslate(0,yTranslation);
-        myFont.drawString("Inspired by work from GenerateMe (Twitter: @generateme_blog)",0,0);
+        myFont.drawString("Inspiré par GenerateMe (Twitter: @generateme_blog)",0,0);
 
         ofPopMatrix();
     }
