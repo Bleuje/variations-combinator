@@ -1,6 +1,6 @@
 # Variations Combinator
 
-This is a kind of real-time generative art drawing tool coded in openFrameworks and shaders.
+This is a kind of real-time generative art drawing project coded in openFrameworks and shaders.
 
 The following blog shows images generated with this tool : [https://math-art-variations.tumblr.com/](https://math-art-variations.tumblr.com/)
 
