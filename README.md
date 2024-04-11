@@ -24,7 +24,7 @@ It should compile easily on windows and linux using the branch `nogamepad` : htt
 
 Using the main branch. [ofxGamepad](https://github.com/Bleuje/ofxGamepad) addon is used (it seems that you should use this fork because of a fix).
 
-Only tested only on linux so far and it might compile less easily.
+Only tested on linux so far and it might compile less easily.
 
 ## Linux executable
 
