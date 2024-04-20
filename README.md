@@ -2,6 +2,8 @@
 
 This is a kind of real-time generative art drawing project coded in openFrameworks and shaders.
 
+It has been used as artistic installation with gamepad control.
+
 The following blog shows images generated with this tool : [https://math-art-variations.tumblr.com/](https://math-art-variations.tumblr.com/)
 
 Examples of outputs :
