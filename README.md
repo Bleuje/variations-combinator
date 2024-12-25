@@ -4,8 +4,6 @@ This is a kind of real-time generative art drawing project coded in openFramewor
 
 It has been used as artistic installation with gamepad control.
 
-The following blog shows images generated with this tool : [https://math-art-variations.tumblr.com/](https://math-art-variations.tumblr.com/)
-
 Examples of outputs :
 
 ![examples of outputs](doc/outputs-examples.gif)
@@ -106,6 +104,8 @@ Some variations have very strong character so they become quickly boring as main
 GNU General Public License v3.0
 
 ## Other
+
+The following blog shows images generated with this tool : [https://math-art-variations.tumblr.com/](https://math-art-variations.tumblr.com/)
 
 Feel free to contribute or share your results.
 
