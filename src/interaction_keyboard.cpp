@@ -13,13 +13,7 @@ void ofApp::keyPressed(int key) {
     }
     if(key=='s') // save image
     {
-        std::string s = ofGetTimestampString();
-        ofPixels pixels;
-        displayedImage.readToPixels(pixels);
-        ofSaveImage(pixels,"images/image_"+s+"_large.png", OF_IMAGE_QUALITY_BEST);
-        std::cout << "Saved image " << s << std::endl;
-        doPrintState = false;
-        saveLog(s);
+        actionSaveImage();
     }
     if(key=='+') // change the pixel value per count
     {

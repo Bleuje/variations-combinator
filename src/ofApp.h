@@ -97,6 +97,7 @@ public:
     void actionResetScale(int i);
     void actionResetRotations();
     void actionChangeProjection();
+    void actionSaveImage();
 
     void keyPressed(int key); // keyboard shortcuts here
 

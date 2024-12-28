@@ -140,3 +140,15 @@ void ofApp::actionChangeProjection()
     renderNewOne = true;
     doPrintState = false;
 }
+
+// save image, and with a .txt log to know its variations
+void ofApp::actionSaveImage()
+{
+    std::string s = ofGetTimestampString();
+    ofPixels pixels;
+    displayedImage.readToPixels(pixels);
+    ofSaveImage(pixels,"images/image_"+s+"_large.png", OF_IMAGE_QUALITY_BEST);
+    std::cout << "Saved image " << s << std::endl;
+    doPrintState = false;
+    saveLog(s);
+}
