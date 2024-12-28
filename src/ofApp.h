@@ -9,6 +9,7 @@
 #define CANVAS_WIDTH (1536)
 #define CANVAS_HEIGHT (1536)
 #define GREY_BACKGROUND_FACTOR 0.88
+#define DISABLE_STATE_PRINT false
 
 class ofApp : public ofBaseApp {
 

@@ -3,6 +3,8 @@
 // print info in console
 void ofApp::printState()
 {
+    if(DISABLE_STATE_PRINT) return;
+
     std::cout << "----------" << std::endl;
 
     if(threeD) std::cout << "3D mode." << std::endl;
