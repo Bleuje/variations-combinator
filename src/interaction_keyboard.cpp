@@ -220,10 +220,7 @@ void ofApp::keyPressed(int key) {
     }
     if(key==')')
     {
-        std::string s = "screenshot_"+ofGetTimestampString();
-        ofSaveScreen("images/"+s+".png");
-        std::cout << "Saved screenshot " << s << std::endl;
-        saveLog(s);
+        actionSaveScreenshot();
     }
     if(doPrintState) printState();
     showState();

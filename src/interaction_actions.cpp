@@ -152,3 +152,12 @@ void ofApp::actionSaveImage()
     doPrintState = false;
     saveLog(s);
 }
+
+// save screenshot of the entire screen
+void ofApp::actionSaveScreenshot()
+{
+    std::string s = "screenshot_"+ofGetTimestampString();
+    ofSaveScreen("images/"+s+".png");
+    std::cout << "Saved screenshot " << s << std::endl;
+    saveLog(s);
+}
