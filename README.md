@@ -113,4 +113,3 @@ Thanks to GenerateMe for the inspiration and work used here.
 
 Possible future work :
 - windows executable
-- split source code into more files
