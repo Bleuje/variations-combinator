@@ -4,7 +4,6 @@
 #include "ofxGamepadHandler.h"
 #include "utils.h"
 
-
 #define MAX_NUMBER_OF_VARIATIONS 15
 #define CANVAS_WIDTH (1536)
 #define CANVAS_HEIGHT (1536)

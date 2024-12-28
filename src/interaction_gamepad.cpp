@@ -2,22 +2,22 @@
 
 void ofApp::axisChanged(ofxGamepadAxisEvent& e)
 {
-	//cout << "AXIS " << e.axis << " VALUE " << ofToString(e.value) << endl;
+	//cout << "AXIS " << e.axis << " VALUE " << ofToString(value) << endl;
     int axisType = e.axis;
     float value = e.value;
-    if(axisType==6 && e.value>0.5)
+    if(axisType==6 && value>0.5)
     {
         actionChangeFunctionAtCursor(1);
     }
-    if(axisType==6 && e.value<-0.5)
+    if(axisType==6 && value<-0.5)
     {
         actionChangeFunctionAtCursor(-1);
     }
-    if(axisType==7 && e.value>0.5)
+    if(axisType==7 && value>0.5)
     {
         actionMoveCursor(-1);
     }
-    if(axisType==7 && e.value<-0.5)
+    if(axisType==7 && value<-0.5)
     {
         actionMoveCursor(1);
     }
@@ -25,10 +25,10 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
     {
         if(axisType==0) curTranslationAxis1 = 0;
         if(axisType==1) curTranslationAxis2 = 0;
-        if(abs(e.value)>0.09)
+        if(abs(value)>0.09)
         {
-            if(axisType==0) curTranslationAxis1 = e.value;
-            if(axisType==1) curTranslationAxis2 = e.value;
+            if(axisType==0) curTranslationAxis1 = value;
+            if(axisType==1) curTranslationAxis2 = value;
             renderNewOne = true;
             doPrintState = false;
         }
@@ -38,19 +38,19 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
         if(axisType==3) curRotAxis1 = 0;
         if(axisType==4) curRotAxis2 = 0;
         latest3DJSMoveTime = time;
-        if(abs(e.value)>0.09)
+        if(abs(value)>0.09)
         {
             latest3DJSMoveTime = time;
-            if(axisType==3) curRotAxis1 = e.value;
-            if(axisType==4) curRotAxis2 = e.value;
+            if(axisType==3) curRotAxis1 = value;
+            if(axisType==4) curRotAxis2 = value;
         }
     }
     if(axisType==4 && threeD==0)
     {
         curScaleAxis1 = 0;
-        if(abs(e.value)>0.09)
+        if(abs(value)>0.09)
         {
-            curScaleAxis1 = -e.value;
+            curScaleAxis1 = -value;
             renderNewOne = true;
             doPrintState = false;
         }
@@ -58,20 +58,20 @@ void ofApp::axisChanged(ofxGamepadAxisEvent& e)
     if(axisType==3 && threeD==0)
     {
         curRotationAxis1 = 0;
-        if(abs(e.value)>0.09)
+        if(abs(value)>0.09)
         {
-            curRotationAxis1 = e.value;
+            curRotationAxis1 = value;
             renderNewOne = true;
             doPrintState = false;
         }
     }
     if(axisType==2)
     {
-        curL2 = e.value;
+        curL2 = value;
     }
     if(axisType==5)
     {
-        curR2 = e.value;
+        curR2 = value;
     }
 }
 

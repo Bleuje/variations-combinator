@@ -45,7 +45,7 @@ void ofApp::showState()
 
         if(indexOfChanges==i)
         {
-            float strLength = functionString.size();
+            //float strLength = functionString.size();
             
             ofPushMatrix();
             ofSetColor(col);
