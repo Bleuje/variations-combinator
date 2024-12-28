@@ -3,10 +3,6 @@
 #include "ofMain.h"
 #include "ofxGamepadHandler.h"
 #include "utils.h"
-#include <random>
-#include <iomanip>
-#include <ctime>
-#include <chrono>
 
 
 #define MAX_NUMBER_OF_VARIATIONS 15
@@ -102,17 +98,6 @@ public:
     void actionChangeProjection();
 
     void keyPressed(int key); // keyboard shortcuts here
-
-    void keyReleased(int key);
-    void mouseMoved(int x, int y);
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-    void mouseEntered(int x, int y);
-    void mouseExited(int x, int y);
-    void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
 
     // gamepad events
     void axisChanged(ofxGamepadAxisEvent &e);
